@@ -14,7 +14,7 @@ class RoleController extends Controller
 
     public function create()
     {
-        return view('roles.create');
+        return view('admin.roles.create');
     }
 
     public function store(Request $request)
@@ -25,12 +25,12 @@ class RoleController extends Controller
 
         Role::create(['name' => $request->name]);
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role created successfully.');
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
     public function edit(Role $role)
     {
-        return view('roles.edit', compact('role'));
+        return view('admin.roles.edit', compact('role'));
     }
 
     public function update(Request $request, Role $role)
@@ -41,13 +41,13 @@ class RoleController extends Controller
 
         $role->update(['name' => $request->name]);
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role updated successfully.');
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 
     public function destroy(Role $role)
     {
         $role->delete();
 
-        return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully.');
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }

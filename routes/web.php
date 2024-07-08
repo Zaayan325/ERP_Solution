@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('users', UserController::class);
+    Route::get('/dashboard/roles', [RoleController::class, 'index'])->name('roles.view');
+    Route::get('/dashboard/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('/dashboard/roles/create', [RoleController::class, 'store'])->name('roles.store');
     Route::resource('roles', RoleController::class);
 });
