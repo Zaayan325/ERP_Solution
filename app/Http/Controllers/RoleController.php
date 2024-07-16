@@ -25,7 +25,7 @@ class RoleController extends Controller
 
         Role::create(['name' => $request->name]);
 
-        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
+        return redirect()->route('roles.view')->with('success', 'Role created successfully.');
     }
 
     public function edit(Role $role)
@@ -41,13 +41,13 @@ class RoleController extends Controller
 
         $role->update(['name' => $request->name]);
 
-        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
+        return redirect()->route('roles.view')->with('success', 'Role updated successfully.');
     }
 
     public function destroy(Role $role)
     {
         $role->delete();
 
-        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
+        return redirect()->route('roles.view')->with('success', 'Role deleted successfully.');
     }
 }
