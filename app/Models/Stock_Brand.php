@@ -11,4 +11,6 @@ class Stock_Brand extends Model
 
     protected $fillable = ['name'];
 
+    protected $table = 'stock_brands';
+
 }

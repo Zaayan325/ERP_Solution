@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('u_o_m_s', function (Blueprint $table) {
+        Schema::create('stock_brands', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->timestamps();
         });
     }
@@ -23,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('u_o_m_s');
+        Schema::dropIfExists('stock_brands');
     }
 };

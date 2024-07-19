@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Stock_UOM extends Model
 {
     use HasFactory;
+
+    protected $table = 'stock_uoms';
 }

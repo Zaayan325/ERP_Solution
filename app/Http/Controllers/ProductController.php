@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with(['category', 'brand', 'uom'])->get();
-        return view('products.index', compact('products'));
+        return view('admin.products.index', compact('products'));
     }
 
     public function create()
@@ -21,7 +21,7 @@ class ProductController extends Controller
         $categories = Product_Category::all();
         $brands = Brand::all();
         $uoms = Uom::all();
-        return view('products.create', compact('categories', 'brands', 'uoms'));
+        return view('admin.products.create', compact('categories', 'brands', 'uoms'));
     }
 
     public function store(Request $request)

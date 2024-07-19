@@ -29,13 +29,13 @@
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
+            <span class="badge bg-primary badge-number" id="notification-count">0</span>
+            </a><!-- End Notification Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            You have <span id="notification-count-text">0</span> new notifications
+            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -43,49 +43,8 @@
 
             <li class="notification-item">
               <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
+              <div id="notification-list">
+                
               </div>
             </li>
 
@@ -226,3 +185,44 @@
     </nav><!-- End Icons Navigation -->
 
   </header><!-- End Header -->
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchNotifications();
+
+        function fetchNotifications() {
+            fetch('/notifications')
+                .then(response => response.json())
+                .then(data => {
+                    const notificationCount = data.length;
+                    const notificationCountElement = document.getElementById('notification-count');
+                    const notificationCountTextElement = document.getElementById('notification-count-text');
+                    const notificationListElement = document.getElementById('notification-list');
+
+                    notificationCountElement.innerText = notificationCount;
+                    notificationCountTextElement.innerText = notificationCount;
+
+                    notificationListElement.innerHTML = '';
+
+                    data.forEach(notification => {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('notification-item');
+                        listItem.innerHTML = `
+                            <i class="bi bi-exclamation-circle text-warning"></i>
+                            <div>
+                                <h4>${notification.data.message}</h4>
+                                <p>Product ID: ${notification.data.product_id}</p>
+                                <p>${new Date(notification.created_at).toLocaleString()}</p>
+                            </div>
+                        `;
+                        notificationListElement.appendChild(listItem);
+
+                        const divider = document.createElement('li');
+                        divider.innerHTML = '<hr class="dropdown-divider">';
+                        notificationListElement.appendChild(divider);
+                    });
+                });
+        }
+    });
+</script>

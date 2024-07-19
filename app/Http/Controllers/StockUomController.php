@@ -24,7 +24,7 @@ class StockUomController extends Controller
 
         Stock_Uom::create($request->all());
 
-        return redirect()->route('admin.stock_uoms.index')->with('success', 'Stock UOM created successfully.');
+        return redirect()->route('stock_uoms.index')->with('success', 'Stock UOM created successfully.');
     }
 
     public function edit(Stock_Uom $stockUom)
@@ -38,13 +38,13 @@ class StockUomController extends Controller
 
         $stockUom->update($request->all());
 
-        return redirect()->route('admin.stock_uoms.index')->with('success', 'Stock UOM updated successfully.');
+        return redirect()->route('stock_uoms.index')->with('success', 'Stock UOM updated successfully.');
     }
 
     public function destroy(Stock_Uom $stockUom)
     {
         $stockUom->delete();
 
-        return redirect()->route('admin.stock_uoms.index')->with('success', 'Stock UOM deleted successfully.');
+        return redirect()->route('stock_uoms.index')->with('success', 'Stock UOM deleted successfully.');
     }
 }

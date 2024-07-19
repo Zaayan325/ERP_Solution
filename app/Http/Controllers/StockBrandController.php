@@ -24,7 +24,7 @@ class StockBrandController extends Controller
 
         Stock_Brand::create($request->all());
 
-        return redirect()->route('admin.stock_brands.index')->with('success', 'Stock Brand created successfully.');
+        return redirect()->route('stock_brands.index')->with('success', 'Stock Brand created successfully.');
     }
 
     public function edit(Stock_Brand $stockBrand)
@@ -38,13 +38,13 @@ class StockBrandController extends Controller
 
         $stockBrand->update($request->all());
 
-        return redirect()->route('admin.stock_brands.index')->with('success', 'Stock Brand updated successfully.');
+        return redirect()->route('stock_brands.index')->with('success', 'Stock Brand updated successfully.');
     }
 
     public function destroy(Stock_Brand $stockBrand)
     {
         $stockBrand->delete();
 
-        return redirect()->route('admin.stock_brands.index')->with('success', 'Stock Brand deleted successfully.');
+        return redirect()->route('stock_brands.index')->with('success', 'Stock Brand deleted successfully.');
     }
 }

@@ -24,7 +24,7 @@ class StockCategoryController extends Controller
 
         Stock_Category::create($request->all());
 
-        return redirect()->route('admin.stock_categories.index')->with('success', 'Stock Category created successfully.');
+        return redirect()->route('stock_categories.index')->with('success', 'Stock Category created successfully.');
     }
 
     public function edit(Stock_Category $stockCategory)
@@ -38,13 +38,13 @@ class StockCategoryController extends Controller
 
         $stockCategory->update($request->all());
 
-        return redirect()->route('admin.stock_categories.index')->with('success', 'Stock Category updated successfully.');
+        return redirect()->route('stock_categories.index')->with('success', 'Stock Category updated successfully.');
     }
 
     public function destroy(Stock_Category $stockCategory)
     {
         $stockCategory->delete();
 
-        return redirect()->route('admin.stock_categories.index')->with('success', 'Stock Category deleted successfully.');
+        return redirect()->route('stock_categories.index')->with('success', 'Stock Category deleted successfully.');
     }
 }

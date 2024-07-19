@@ -10,12 +10,12 @@ class ProductCategoryController extends Controller
     public function index()
     {
         $categories = Product_Category::all();
-        return view('product_categories.index', compact('categories'));
+        return view('admin.product_categories.index', compact('categories'));
     }
 
     public function create()
     {
-        return view('product_categories.create');
+        return view('admin.product_categories.create');
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class ProductCategoryController extends Controller
 
     public function edit(Product_Category $productCategory)
     {
-        return view('product_categories.edit', compact('productCategory'));
+        return view('admin.product_categories.edit', compact('productCategory'));
     }
 
     public function update(Request $request, Product_Category $productCategory)

@@ -12,6 +12,9 @@ use App\Http\Controllers\UomController;
 use App\Http\Controllers\StockCategoryController;
 use App\Http\Controllers\StockUomController;
 use App\Http\Controllers\StockBrandController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -51,4 +54,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('stock_categories', StockCategoryController::class);
     Route::resource('stock_uoms', StockUomController::class);
     Route::resource('stock_brands', StockBrandController::class);
+
+    Route::resource('inventory', InventoryController::class);
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+    Route::resource('suppliers', SupplierController::class);
+
 });

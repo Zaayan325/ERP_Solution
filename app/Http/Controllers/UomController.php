@@ -10,12 +10,12 @@ class UomController extends Controller
     public function index()
     {
         $uoms = Uom::all();
-        return view('uoms.index', compact('uoms'));
+        return view('admin.uoms.index', compact('uoms'));
     }
 
     public function create()
     {
-        return view('uoms.create');
+        return view('admin.uoms.create');
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class UomController extends Controller
 
     public function edit(Uom $uom)
     {
-        return view('uoms.edit', compact('uom'));
+        return view('admin.uoms.edit', compact('uom'));
     }
 
     public function update(Request $request, Uom $uom)

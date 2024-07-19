@@ -11,4 +11,7 @@ class UOM extends Model
 
     protected $fillable = ['name'];
 
+    protected $table = 'uoms';
+
+
 }
