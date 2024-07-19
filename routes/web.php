@@ -15,6 +15,12 @@ use App\Http\Controllers\StockBrandController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SalesItemController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchaseItemController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -60,5 +66,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
     Route::resource('suppliers', SupplierController::class);
+
+    Route::resource('customers', CustomerController::class);
+
+    Route::resource('sales', SaleController::class);
+
+    Route::resource('sales_items', SalesItemController::class);
+    Route::resource('payments', PaymentController::class);
+
+    Route::resource('purchases', PurchaseController::class);
+    Route::resource('purchase_items', PurchaseItemController::class);
 
 });

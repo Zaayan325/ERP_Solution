@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="pagetitle">
-        <h1>Edit Supplier</h1>
+        <h1>Add Customer</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('suppliers.index') }}">Suppliers</a></li>
-                <li class="breadcrumb-item active">Edit Supplier</li>
+                <li class="breadcrumb-item"><a href="{{ route('customers.index') }}">Customers</a></li>
+                <li class="breadcrumb-item active">Add Customer</li>
             </ol>
         </nav>
     </div>
@@ -17,28 +17,27 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Edit Supplier</h5>
+                        <h5 class="card-title">Add Customer</h5>
 
-                        <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
+                        <form action="{{ route('customers.store') }}" method="POST">
                             @csrf
-                            @method('PUT')
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ $supplier->name }}" required>
+                                <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ $supplier->email }}">
+                                <input type="email" class="form-control" id="email" name="email">
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="phone" name="phone" value="{{ $supplier->phone }}" required>
+                                <input type="text" class="form-control" id="phone" name="phone">
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" name="address">{{ $supplier->address }}</textarea>
+                                <input type="text" class="form-control" id="address" name="address">
                             </div>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
 
                     </div>
