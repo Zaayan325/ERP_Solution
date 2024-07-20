@@ -7,6 +7,8 @@ use App\Models\Product_Category;
 use App\Models\Brand;
 use App\Models\UOM;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class ProductController extends Controller
 {
@@ -18,34 +20,42 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = Product_Category::all();
+        $productCategories = Product_Category::all();
         $brands = Brand::all();
         $uoms = Uom::all();
-        return view('admin.products.create', compact('categories', 'brands', 'uoms'));
+        return view('admin.products.create', compact('productCategories', 'brands', 'uoms'));
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'category_id' => 'required|exists:product_categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'uom_id' => 'required|exists:uoms,id',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-        ]);
+{
+    Log::info('Request Data: ', $request->all());
 
-        Product::create($request->all());
+    $request->validate([
+        'name' => 'required',
+        'product_category_id' => 'required|exists:product_categories,id',
+        'brand_id' => 'required|exists:brands,id',
+        'uom_id' => 'required|exists:uoms,id',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+    ]);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
-    }
+    Product::create([
+        'name' => $request->name,
+        'product_category_id' => $request->product_category_id,
+        'brand_id' => $request->brand_id,
+        'uom_id' => $request->uom_id,
+        'price' => $request->price,
+        'stock' => $request->stock,
+    ]);
 
+    return redirect()->route('products.index')->with('success', 'Product created successfully.');
+}
     public function edit(Product $product)
     {
-        $categories = Product_Category::all();
+        $productCategories = Product_Category::all();
         $brands = Brand::all();
         $uoms = Uom::all();
-        return view('products.edit', compact('product', 'categories', 'brands', 'uoms'));
+        return view('admin.products.edit', compact('productCategories', 'brands', 'uoms'));
     }
 
     public function update(Request $request, Product $product)

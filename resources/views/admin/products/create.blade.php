@@ -30,9 +30,9 @@
                                 <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="category_id" class="form-label">Category</label>
-                                <select class="form-control" id="category_id" name="category_id" required>
-                                    @foreach ($categories as $category)
+                            <label for="product_category_id" class="form-label">Category</label>
+                                <select class="form-control" id="product_category_id" name="product_category_id" required>
+                                    @foreach ($productCategories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>

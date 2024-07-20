@@ -4,7 +4,7 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
   <li class="nav-item">
-    <a class="nav-link " href="index.html">
+    <a class="nav-link " href="{{ route('dashboard') }}">
       <i class="bi bi-grid"></i>
       <span>Dashboard</span>
     </a>
@@ -23,6 +23,11 @@
     <li>
         <a href="{{ route('brands.index') }}">
           <i class="bi bi-circle"></i><span>View Brands</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('product_categories.index') }}">
+          <i class="bi bi-circle"></i><span>View Categories</span>
         </a>
       </li>
       <li>
