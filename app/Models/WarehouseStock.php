@@ -15,4 +15,7 @@ class WarehouseStock extends Model
     {
         return $this->belongsTo(Warehouse::class);
     }
+
+    protected $table = 'warehouse_stock';
+
 }

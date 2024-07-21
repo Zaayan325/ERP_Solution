@@ -19,28 +19,24 @@
                     <div class="card-body">
                         <h5 class="card-title">Edit Stock</h5>
 
-                        <form action="{{ route('warehouse_stock.update', $stock->id) }}" method="POST">
+                        <form action="{{ route('warehouse_stock.update', $warehouseStock->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
-                                <label for="warehouse" class="form-label">Warehouse</label>
-                                <select class="form-control" id="warehouse" name="warehouse_id" required>
+                                <label for="warehouse_id" class="form-label">Warehouse</label>
+                                <select class="form-control" id="warehouse_id" name="warehouse_id" required>
                                     @foreach($warehouses as $warehouse)
-                                        <option value="{{ $warehouse->id }}" {{ $stock->warehouse_id == $warehouse->id ? 'selected' : '' }}>{{ $warehouse->name }}</option>
+                                        <option value="{{ $warehouse->id }}" {{ $warehouseStock->warehouse_id == $warehouse->id ? 'selected' : '' }}>{{ $warehouse->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="product" class="form-label">Product</label>
-                                <select class="form-control" id="product" name="product_id" required>
-                                    @foreach($products as $product)
-                                        <option value="{{ $product->id }}" {{ $stock->product_id == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="product_name" class="form-label">Product Name</label>
+                                <input type="text" class="form-control" id="product_name" name="product_name" value="{{ $warehouseStock->product_name }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $stock->quantity }}" required>
+                                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $warehouseStock->quantity }}" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Update</button>
                         </form>

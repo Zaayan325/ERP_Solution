@@ -50,30 +50,36 @@ class ProductController extends Controller
 
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
 }
-    public function edit(Product $product)
+public function edit(Product $product)
     {
         $productCategories = Product_Category::all();
         $brands = Brand::all();
         $uoms = Uom::all();
-        return view('admin.products.edit', compact('productCategories', 'brands', 'uoms'));
+        return view('admin.products.edit', compact('product', 'productCategories', 'brands', 'uoms'));
     }
 
     public function update(Request $request, Product $product)
     {
         $request->validate([
             'name' => 'required',
-            'category_id' => 'required|exists:product_categories,id',
+            'product_category_id' => 'required|exists:product_categories,id',
             'brand_id' => 'required|exists:brands,id',
             'uom_id' => 'required|exists:uoms,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
         ]);
 
-        $product->update($request->all());
+        $product->update([
+            'name' => $request->name,
+            'product_category_id' => $request->product_category_id,
+            'brand_id' => $request->brand_id,
+            'uom_id' => $request->uom_id,
+            'price' => $request->price,
+            'stock' => $request->stock,
+        ]);
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
-
     public function destroy(Product $product)
     {
         $product->delete();

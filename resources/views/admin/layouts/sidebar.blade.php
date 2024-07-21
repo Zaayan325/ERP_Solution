@@ -143,6 +143,34 @@
           <i class="bi bi-circle"></i><span>Add Inventory</span>
         </a>
       </li>
+    </ul>
+      <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-gem"></i><span>Sales</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+    <li>
+        <a href="{{ route('sales.index') }}">
+          <i class="bi bi-circle"></i><span>View Sales</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('sales.create') }}">
+          <i class="bi bi-circle"></i><span>Add Sales</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ route('sales_items.index') }}">
+          <i class="bi bi-circle"></i><span>View Sales Items</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ route('payments.index') }}">
+          <i class="bi bi-circle"></i><span>View Payments</span>
+        </a>
+      </li>
       
     </ul>
   </li><!-- End Icons Nav -->

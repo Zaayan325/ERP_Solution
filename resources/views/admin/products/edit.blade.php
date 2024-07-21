@@ -31,10 +31,10 @@
                                 <textarea class="form-control" id="description" name="description" rows="3">{{ $product->description }}</textarea>
                             </div>
                             <div class="mb-3">
-                            <label for="product_category_id" class="form-label">Category</label>
-                            <select class="form-control" id="product_category_id" name="product_category_id" required>
-                            @foreach ($productCategories as $category)
-                            <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            <label for="product_category_id" class="form-label">Product Category</label>
+                                <select class="form-control" id="product_category_id" name="product_category_id" required>
+                                    @foreach ($productCategories as $category)
+                                        <option value="{{ $category->id }}" {{ $product->product_category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

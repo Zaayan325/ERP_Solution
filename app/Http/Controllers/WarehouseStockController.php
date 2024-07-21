@@ -8,52 +8,58 @@ use Illuminate\Http\Request;
 
 class WarehouseStockController extends Controller
 {
-    public function index(Warehouse $warehouse)
+    public function index()
     {
-        $stocks = $warehouse->stocks;
-        return view('admin.warehouse_stock.index', compact('warehouse', 'stocks'));
+        $warehouseStocks = WarehouseStock::with('warehouse')->get();
+        return view('admin.warehouse_stock.index', compact('warehouseStocks'));
     }
 
-    public function create(Warehouse $warehouse)
+    public function create()
     {
-        return view('admin.warehouse_stock.create', compact('warehouse'));
+        $warehouses = Warehouse::all();
+        return view('admin.warehouse_stock.create', compact('warehouses'));
     }
 
-    public function store(Request $request, Warehouse $warehouse)
+    public function store(Request $request)
     {
         $request->validate([
             'warehouse_id' => 'required|exists:warehouses,id',
             'product_name' => 'required',
-            'quantity' => 'required|integer',
+            'quantity' => 'required|integer|min:0',
         ]);
 
-        $warehouse->stocks()->create($request->all());
+        WarehouseStock::create([
+            'warehouse_id' => $request->warehouse_id,
+            'product_name' => $request->product_name,
+            'quantity' => $request->quantity,
+        ]);
 
-        return redirect()->route('warehouse_stock.index', $warehouse)->with('success', 'Stock added successfully.');
+        return redirect()->route('warehouse_stock.index')->with('success', 'Stock added successfully.');
     }
 
-    public function edit(Warehouse $warehouse, WarehouseStock $stock)
+    public function edit(WarehouseStock $warehouseStock)
     {
-        return view('admin.warehouse_stock.edit', compact('warehouse', 'stock'));
+        $warehouses = Warehouse::all();
+        return view('admin.warehouse_stock.edit', compact('warehouseStock', 'warehouses'));
     }
 
-    public function update(Request $request, Warehouse $warehouse, WarehouseStock $stock)
+    public function update(Request $request, WarehouseStock $warehouseStock)
     {
         $request->validate([
             'warehouse_id' => 'required|exists:warehouses,id',
             'product_name' => 'required',
-            'quantity' => 'required|integer',
+            'quantity' => 'required|integer|min:0',
         ]);
 
-        $stock->update($request->all());
+        $warehouseStock->update($request->all());
 
-        return redirect()->route('warehouse_stock.index', $warehouse)->with('success', 'Stock updated successfully.');
+        return redirect()->route('warehouse_stock.index')->with('success', 'Stock updated successfully.');
     }
 
-    public function destroy(Warehouse $warehouse, WarehouseStock $stock)
+    public function destroy(WarehouseStock $warehouseStock)
     {
-        $stock->delete();
+        $warehouseStock->delete();
 
-        return redirect()->route('warehouse_stock.index', $warehouse)->with('success', 'Stock deleted successfully.');
+        return redirect()->route('warehouse_stock.index')->with('success', 'Stock deleted successfully.');
     }
 }

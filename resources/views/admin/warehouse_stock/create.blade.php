@@ -6,7 +6,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('warehouse_stock.index') }}">Warehouse Stock</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('warehouse_stock.index') }}">Warehouse Stocks</a></li>
                 <li class="breadcrumb-item active">Add Stock</li>
             </ol>
         </nav>
@@ -22,20 +22,16 @@
                         <form action="{{ route('warehouse_stock.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="warehouse" class="form-label">Warehouse</label>
-                                <select class="form-control" id="warehouse" name="warehouse_id" required>
-                                    @foreach($warehouses as $warehouse)
+                                <label for="warehouse_id" class="form-label">Warehouse</label>
+                                <select class="form-control" id="warehouse_id" name="warehouse_id" required>
+                                    @foreach ($warehouses as $warehouse)
                                         <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="product" class="form-label">Product</label>
-                                <select class="form-control" id="product" name="product_id" required>
-                                    @foreach($products as $product)
-                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="product_name" class="form-label">Product</label>
+                                <input type="text" class="form-control" id="product_name" name="product_name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity</label>
