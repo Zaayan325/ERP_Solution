@@ -26,7 +26,9 @@
                                 <label for="customer_id" class="form-label">Customer</label>
                                 <select class="form-control" id="customer_id" name="customer_id" required>
                                     @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}" {{ $sale->customer_id == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
+                                        <option value="{{ $customer->id }}" {{ $sale->customer_id == $customer->id ? 'selected' : '' }}>
+                                            {{ $customer->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -35,22 +37,26 @@
                                 <input type="date" class="form-control" id="date" name="date" value="{{ $sale->date }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="items" class="form-label">Items</label>
-                                <div id="items">
+                                <label for="products" class="form-label">Products</label>
+                                <div id="products">
                                     @foreach ($sale->items as $index => $item)
-                                        <div class="item">
-                                            <select class="form-control mb-2" name="items[{{ $index }}][product_id]" required>
-                                                <option value="">Select Product</option>
+                                        <div class="product-item mb-3">
+                                            <select class="form-control mb-2 product-select" name="items[{{ $index }}][product_id]" data-index="{{ $index }}" required>
+                                                <option value="">Select a product</option>
                                                 @foreach ($products as $product)
-                                                    <option value="{{ $product->id }}" {{ $item->product_id == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
+                                                    <option value="{{ $product->id }}" data-price="{{ $product->price }}" {{ $item->product_id == $product->id ? 'selected' : '' }}>
+                                                        {{ $product->name }} - {{ $product->brand->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
-                                            <input type="number" class="form-control mb-2" name="items[{{ $index }}][quantity]" placeholder="Quantity" value="{{ $item->quantity }}" required>
-                                            <input type="number" class="form-control mb-2" name="items[{{ $index }}][price]" placeholder="Price" value="{{ $item->price }}" required>
+                                            <input type="number" class="form-control mb-2 product-quantity" name="items[{{ $index }}][quantity]" value="{{ $item->quantity }}" placeholder="Quantity" required>
+                                            <input type="number" class="form-control mb-2 product-price" name="items[{{ $index }}][price]" value="{{ $item->price }}" placeholder="Price" step="0.01" required>
+                                            <input type="number" class="form-control mb-2 product-total" name="items[{{ $index }}][total]" value="{{ $item->total }}" placeholder="Total" step="0.01" readonly>
+                                            <button type="button" class="btn btn-danger remove-product">Remove</button>
                                         </div>
                                     @endforeach
                                 </div>
-                                <button type="button" class="btn btn-secondary" id="add-item">Add Item</button>
+                                <button type="button" class="btn btn-secondary" id="add-product">Add Product</button>
                             </div>
                             <button type="submit" class="btn btn-primary">Update</button>
                         </form>
@@ -60,26 +66,57 @@
             </div>
         </div>
     </section>
-@endsection
 
-@push('scripts')
-<script>
-    document.getElementById('add-item').addEventListener('click', function() {
-        var items = document.getElementById('items');
-        var itemCount = items.getElementsByClassName('item').length;
-        var newItem = document.createElement('div');
-        newItem.className = 'item';
-        newItem.innerHTML = `
-            <select class="form-control mb-2" name="items[${itemCount}][product_id]" required>
-                <option value="">Select Product</option>
-                @foreach ($products as $product)
-                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                @endforeach
-            </select>
-            <input type="number" class="form-control mb-2" name="items[${itemCount}][quantity]" placeholder="Quantity" required>
-            <input type="number" class="form-control mb-2" name="items[${itemCount}][price]" placeholder="Price" required>
-        `;
-        items.appendChild(newItem);
-    });
-</script>
-@endpush
+    <script>
+        document.getElementById('add-product').addEventListener('click', function () {
+            const productItems = document.getElementById('products');
+            const newIndex = productItems.children.length;
+            const newProductItem = `
+                <div class="product-item mb-3">
+                    <select class="form-control mb-2 product-select" name="items[${newIndex}][product_id]" data-index="${newIndex}" required>
+                        <option value="">Select a product</option>
+                        @foreach ($products as $product)
+                            <option value="{{ $product->id }}" data-price="{{ $product->price }}">
+                                {{ $product->name }} - {{ $product->brand->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <input type="number" class="form-control mb-2 product-quantity" name="items[${newIndex}][quantity]" placeholder="Quantity" required>
+                    <input type="number" class="form-control mb-2 product-price" name="items[${newIndex}][price]" placeholder="Price" step="0.01" required>
+                    <input type="number" class="form-control mb-2 product-total" name="items[${newIndex}][total]" placeholder="Total" step="0.01" readonly>
+                    <button type="button" class="btn btn-danger remove-product">Remove</button>
+                </div>
+            `;
+            productItems.insertAdjacentHTML('beforeend', newProductItem);
+        });
+
+        document.addEventListener('change', function (e) {
+            if (e.target.classList.contains('product-select')) {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                const priceInput = e.target.closest('.product-item').querySelector('.product-price');
+                priceInput.value = selectedOption.getAttribute('data-price');
+                updateTotal(e.target.closest('.product-item'));
+            } else if (e.target.classList.contains('product-quantity') || e.target.classList.contains('product-price')) {
+                updateTotal(e.target.closest('.product-item'));
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-product')) {
+                e.target.closest('.product-item').remove();
+            }
+        });
+
+        function updateTotal(productItem) {
+            const quantityInput = productItem.querySelector('.product-quantity');
+            const priceInput = productItem.querySelector('.product-price');
+            const totalInput = productItem.querySelector('.product-total');
+
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const price = parseFloat(priceInput.value) || 0;
+            const total = quantity * price;
+
+            totalInput.value = total.toFixed(2);
+        }
+    </script>
+@endsection
