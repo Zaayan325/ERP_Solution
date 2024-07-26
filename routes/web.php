@@ -28,9 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/dashboard', function () {
-    return view('admin.index');
-})->name('dashboard');
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -45,6 +43,10 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.index');
+    })->name('dashboard');
+
     Route::get('/dashboard/roles', [RoleController::class, 'index'])->name('roles.view');
     Route::get('/dashboard/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::post('/dashboard/roles/create', [RoleController::class, 'store'])->name('roles.store');

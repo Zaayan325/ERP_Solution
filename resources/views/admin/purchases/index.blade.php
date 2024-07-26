@@ -16,9 +16,8 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Purchase List</h5>
+                        <h5 class="card-title">Purchases List</h5>
                         <a href="{{ route('purchases.create') }}" class="btn btn-primary mb-3">Add Purchase</a>
-
                         <table class="table">
                             <thead>
                                 <tr>
@@ -37,19 +36,19 @@
                                         <td>{{ $purchase->date }}</td>
                                         <td>{{ $purchase->total_amount }}</td>
                                         <td>
-                                            <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info">View</a>
-                                            <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning">Edit</a>
+                                            <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info btn-sm">View</a>
+                                            <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                             <form action="{{ route('purchases.destroy', $purchase->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this purchase?')">Delete</button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-
+                        {{ $purchases->links() }}
                     </div>
                 </div>
             </div>
