@@ -190,9 +190,23 @@
           <i class="bi bi-circle"></i><span>Add Purchase</span>
         </a>
       </li>
+
+      <li>
+        <a href="{{ route('purchase_items.index') }}">
+          <i class="bi bi-circle"></i><span>View Purchase Items</span>
+        </a>
+      </li>
       
     </ul>
   </li><!-- End Icons Nav -->
+  <li class="nav-heading">Reports</li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('reports.index') }}">
+            <i class="bi bi-file-earmark-text"></i>
+            <span>Reports</span>
+        </a>
+    </li>
 
   <li class="nav-heading">Pages</li>
 

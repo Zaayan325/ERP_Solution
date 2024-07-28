@@ -21,6 +21,7 @@ use App\Http\Controllers\SalesItemController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseItemController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -78,5 +79,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('purchases', PurchaseController::class);
     Route::resource('purchase_items', PurchaseItemController::class);
+
+    // Routes for purchase returns
+    Route::get('purchases/{purchase}/return', [PurchaseController::class, 'returnCreate'])->name('purchases.returnCreate');
+    Route::post('purchases/{purchase}/return', [PurchaseController::class, 'returnStore'])->name('purchases.returnStore');
+    Route::get('purchases/{purchase}/returns', [PurchaseController::class, 'viewReturns'])->name('purchases.viewReturns');
+
+    // Routes for sales returns
+    Route::get('sales/{sale}/return', [SaleController::class, 'returnCreate'])->name('sales.returnCreate');
+    Route::post('sales/{sale}/return', [SaleController::class, 'returnStore'])->name('sales.returnStore');
+    Route::get('sales/{sale}/returns', [SaleController::class, 'viewReturns'])->name('sales.viewReturns');
+
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
 });

@@ -36,45 +36,16 @@
                                         <td>{{ $sale->date }}</td>
                                         <td>{{ $sale->total_amount }}</td>
                                         <td>
-                                        <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-info">View</a>
-                                            <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-warning">Edit</a>
+                                            <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-info btn-sm">View</a>
+                                            <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="{{ route('sales.returnCreate', $sale->id) }}" class="btn btn-secondary btn-sm">Return</a>
                                             <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Delete</button>
-                                            </form>                                        </td>
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this sale?')">Delete</button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <!-- {{ $sales->links() }} -->
-
-                        <h5 class="card-title mt-4">Sales Items</h5>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Sale ID</th>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Brand</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($sales as $sale)
-                                    @foreach ($sale->items as $item)
-                                        <tr>
-                                            <th scope="row">{{ $item->id }}</th>
-                                            <td>{{ $item->sale_id }}</td>
-                                            <td>{{ $item->product->name }}</td>
-                                            <td>{{ $item->product->brand->name }}</td>
-                                            <td>{{ $item->quantity }}</td>
-                                            <td>{{ $item->price }}</td>
-                                            <td>{{ $item->total }}</td>
-                                        </tr>
-                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>

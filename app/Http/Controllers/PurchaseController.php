@@ -6,6 +6,7 @@ use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\PurchaseItem;
+use App\Models\PurchaseReturn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -146,5 +147,54 @@ class PurchaseController extends Controller
         });
 
         return redirect()->route('purchases.index')->with('success', 'Purchase deleted successfully.');
+    }
+
+    public function returnCreate(Purchase $purchase)
+    {
+        $products = $purchase->items->pluck('product');
+        return view('admin.purchases.return_create', compact('purchase', 'products'));
+    }
+
+    public function returnStore(Request $request, Purchase $purchase)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+            'items.*.price' => 'required|numeric|min:0',
+        ]);
+
+        DB::transaction(function () use ($request, $purchase) {
+            $totalAmount = 0;
+
+            foreach ($request->items as $item) {
+                $product = Product::findOrFail($item['product_id']);
+                $total = $item['price'] * $item['quantity'];
+                $totalAmount += $total;
+
+                PurchaseReturn::create([
+                    'purchase_id' => $purchase->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'total' => $total,
+                ]);
+
+                // Decrease product stock
+                $product->update(['stock' => $product->stock - $item['quantity']]);
+            }
+
+            // Adjust purchase total amount
+            $purchase->update(['total_amount' => $purchase->total_amount - $totalAmount]);
+        });
+
+        return redirect()->route('purchases.index')->with('success', 'Purchase return processed successfully.');
+    }
+
+    // View purchase returns
+    public function viewReturns(Purchase $purchase)
+    {
+        $purchase->load('returns.product');
+        return view('admin.purchases.view_returns', compact('purchase'));
     }
 }

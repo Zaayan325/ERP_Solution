@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\SalesItem;
+use App\Models\SalesReturn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -135,9 +136,67 @@ class SaleController extends Controller
 
     public function destroy(Sale $sale)
     {
-        $sale->delete();
+        DB::transaction(function () use ($sale) {
+            // Reverse the stock for the existing items
+            foreach ($sale->items as $item) {
+                $product = Product::findOrFail($item->product_id);
+                $product->update(['stock' => $product->stock + $item->quantity]);
+                $item->delete();
+            }
+
+            $sale->delete();
+        });
 
         return redirect()->route('sales.index')->with('success', 'Sale deleted successfully.');
     }
 
+    // Handle sales returns
+    public function returnCreate(Sale $sale)
+    {
+        $products = $sale->items->pluck('product');
+        return view('admin.sales.return_create', compact('sale', 'products'));
+    }
+
+    public function returnStore(Request $request, Sale $sale)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+            'items.*.price' => 'required|numeric|min:0',
+        ]);
+
+        DB::transaction(function () use ($request, $sale) {
+            $totalAmount = 0;
+
+            foreach ($request->items as $item) {
+                $product = Product::findOrFail($item['product_id']);
+                $total = $item['price'] * $item['quantity'];
+                $totalAmount += $total;
+
+                SalesReturn::create([
+                    'sale_id' => $sale->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'total' => $total,
+                ]);
+
+                // Increase product stock
+                $product->update(['stock' => $product->stock + $item['quantity']]);
+            }
+
+            // Adjust sale total amount
+            $sale->update(['total_amount' => $sale->total_amount - $totalAmount]);
+        });
+
+        return redirect()->route('sales.index')->with('success', 'Sales return processed successfully.');
+    }
+
+    // View sales returns
+    public function viewReturns(Sale $sale)
+    {
+        $sale->load('returns.product');
+        return view('admin.sales.view_returns', compact('sale'));
+    }
 }
