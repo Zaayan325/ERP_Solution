@@ -9,11 +9,18 @@ class SalesReturn extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sale_id', 'product_id', 'quantity', 'price', 'total'];
+    protected $fillable = [
+        'customer_id',
+        'product_id',
+        'quantity',
+        'price',
+        'total',
+        'date',
+    ];
 
-    public function sale()
+    public function customer()
     {
-        return $this->belongsTo(Sale::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function product()

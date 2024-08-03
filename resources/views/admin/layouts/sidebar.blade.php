@@ -171,6 +171,12 @@
           <i class="bi bi-circle"></i><span>View Payments</span>
         </a>
       </li>
+
+      <li>
+        <a href="{{ route('sales_returns.index') }}">
+          <i class="bi bi-circle"></i><span>View Sale Returns</span>
+        </a>
+      </li>
       
     </ul>
   </li><!-- End Icons Nav -->
@@ -194,6 +200,12 @@
       <li>
         <a href="{{ route('purchase_items.index') }}">
           <i class="bi bi-circle"></i><span>View Purchase Items</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="{{ route('purchase_returns.index') }}">
+          <i class="bi bi-circle"></i><span>View Purchase Returns</span>
         </a>
       </li>
       

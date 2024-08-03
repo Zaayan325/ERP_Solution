@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('sales_returns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_id')->constrained('sales')->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('product_id')->constrained('products');
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
             $table->decimal('total', 10, 2);
+            $table->date('date');
             $table->timestamps();
         });
     }

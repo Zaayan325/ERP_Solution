@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('purchase_returns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_id')->constrained('purchases')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers');
             $table->foreignId('product_id')->constrained('products');
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
             $table->decimal('total', 10, 2);
+            $table->date('date');
             $table->timestamps();
         });
     }

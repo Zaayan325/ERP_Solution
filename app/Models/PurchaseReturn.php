@@ -9,11 +9,18 @@ class PurchaseReturn extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['purchase_id', 'product_id', 'quantity', 'price', 'total'];
+    protected $fillable = [
+        'supplier_id',
+        'product_id',
+        'quantity',
+        'price',
+        'total',
+        'date',
+    ];
 
-    public function purchase()
+    public function supplier()
     {
-        return $this->belongsTo(Purchase::class);
+        return $this->belongsTo(Supplier::class);
     }
 
     public function product()

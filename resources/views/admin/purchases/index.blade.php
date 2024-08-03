@@ -38,7 +38,6 @@
                                         <td>
                                             <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info btn-sm">View</a>
                                             <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <a href="{{ route('purchases.returnCreate', $purchase->id) }}" class="btn btn-secondary btn-sm">Return</a>
                                             <form action="{{ route('purchases.destroy', $purchase->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')

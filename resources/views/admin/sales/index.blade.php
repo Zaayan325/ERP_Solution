@@ -38,7 +38,6 @@
                                         <td>
                                             <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-info btn-sm">View</a>
                                             <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <a href="{{ route('sales.returnCreate', $sale->id) }}" class="btn btn-secondary btn-sm">Return</a>
                                             <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
