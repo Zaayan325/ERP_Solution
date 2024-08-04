@@ -15,18 +15,15 @@ class ProductCategoryController extends Controller
 
     public function create()
     {
-        return view('admin.product_categories.create');
+        $categories = Product_Category::all();
+        return view('admin.product_categories.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:product_categories',
-        ]);
-
-        Product_Category::create($request->all());
-
-        return redirect()->route('product_categories.index')->with('success', 'Category created successfully.');
+        $request->validate(['name' => 'required|unique:product_categories,name']);
+        $category = Product_Category::create(['name' => $request->name]);
+        return response()->json(['success' => true, 'category' => $category]);
     }
 
     public function edit(Product_Category $productCategory)
@@ -34,21 +31,18 @@ class ProductCategoryController extends Controller
         return view('admin.product_categories.edit', compact('productCategory'));
     }
 
-    public function update(Request $request, Product_Category $productCategory)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|unique:product_categories,name,' . $productCategory->id,
-        ]);
-
-        $productCategory->update($request->all());
-
-        return redirect()->route('product_categories.index')->with('success', 'Category updated successfully.');
+        $request->validate(['name' => 'required|unique:product_categories,name,' . $id]);
+        $category = Product_Category::findOrFail($id);
+        $category->update(['name' => $request->name]);
+        return response()->json(['success' => true, 'category' => $category]);
     }
 
-    public function destroy(Product_Category $productCategory)
+    public function destroy($id)
     {
-        $productCategory->delete();
-
-        return redirect()->route('product_categories.index')->with('success', 'Category deleted successfully.');
+        $category = Product_Category::findOrFail($id);
+        $category->delete();
+        return response()->json(['success' => true]);
     }
 }

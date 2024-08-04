@@ -20,13 +20,9 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:brands',
-        ]);
-
-        Brand::create($request->all());
-
-        return redirect()->route('brands.index')->with('success', 'Brand created successfully.');
+        $request->validate(['name' => 'required|unique:brands,name']);
+        $brand = Brand::create(['name' => $request->name]);
+        return response()->json(['success' => true, 'brand' => $brand]);
     }
 
     public function edit(Brand $brand)
@@ -34,21 +30,18 @@ class BrandController extends Controller
         return view('admin.brands.edit', compact('brand'));
     }
 
-    public function update(Request $request, Brand $brand)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|unique:brands,name,' . $brand->id,
-        ]);
-
-        $brand->update($request->all());
-
-        return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');
+        $request->validate(['name' => 'required|unique:brands,name,' . $id]);
+        $brand = Brand::findOrFail($id);
+        $brand->update(['name' => $request->name]);
+        return response()->json(['success' => true, 'brand' => $brand]);
     }
 
-    public function destroy(Brand $brand)
+    public function destroy($id)
     {
+        $brand = Brand::findOrFail($id);
         $brand->delete();
-
-        return redirect()->route('brands.index')->with('success', 'Brand deleted successfully.');
+        return response()->json(['success' => true]);
     }
 }

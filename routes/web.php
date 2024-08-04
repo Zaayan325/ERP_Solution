@@ -61,6 +61,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('product_categories', ProductCategoryController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('uoms', UomController::class);
+    // Route::resource('product_categories', ProductCategoryController::class)->only(['store', 'update', 'destroy']);
+    // Route::resource('brands', BrandController::class)->only(['store', 'update', 'destroy']);
+    // Route::resource('uoms', UomController::class)->only(['store', 'update', 'destroy']);
 
     Route::resource('stock_categories', StockCategoryController::class);
     Route::resource('stock_uoms', StockUomController::class);
