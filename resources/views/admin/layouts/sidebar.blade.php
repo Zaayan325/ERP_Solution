@@ -15,21 +15,6 @@
       <i class="bi bi-menu-button-wide"></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-    <li>
-        <a href="{{ route('uoms.index') }}">
-          <i class="bi bi-circle"></i><span>View Units</span>
-        </a>
-      </li>
-    <li>
-        <a href="{{ route('brands.index') }}">
-          <i class="bi bi-circle"></i><span>View Brands</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('product_categories.index') }}">
-          <i class="bi bi-circle"></i><span>View Categories</span>
-        </a>
-      </li>
       <li>
         <a href="{{ route('products.index') }}">
           <i class="bi bi-circle"></i><span>View Products</span>

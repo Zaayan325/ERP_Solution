@@ -1,5 +1,7 @@
 @extends('admin.layouts.main')
-
+@push('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
 @section('content')
     <div class="pagetitle">
         <h1>Create Product</h1>
@@ -64,14 +66,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="price" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="price" name="price" step="0.01" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="stock" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="stock" name="stock" required>
-                            </div>
+                        
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
@@ -97,16 +92,12 @@
                         <button type="button" class="btn btn-primary" id="addCategory">Add</button>
                     </form>
                     <hr>
-                    <h5>Existing Categories</h5>
-                    <ul id="categoryList">
-                        @foreach ($productCategories as $category)
-                            <li>
-                                {{ $category->name }}
-                                <button class="btn btn-sm btn-danger ms-2 delete-category" data-id="{{ $category->id }}">Delete</button>
-                                <button class="btn btn-sm btn-warning ms-2 edit-category" data-id="{{ $category->id }}" data-name="{{ $category->name }}">Edit</button>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <button type="button" id="loadCategories" class="btn btn-info">View Existing Categories</button>
+                    <div id="existingCategories" class="mt-3" style="display:none;">
+                        <h5>Existing Categories</h5>
+                        <div id="categoryPagination"></div>
+                        <ul id="categoryList"></ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,16 +141,12 @@
                         <button type="button" class="btn btn-primary" id="addBrand">Add</button>
                     </form>
                     <hr>
-                    <h5>Existing Brands</h5>
-                    <ul id="brandList">
-                        @foreach ($brands as $brand)
-                            <li>
-                                {{ $brand->name }}
-                                <button class="btn btn-sm btn-danger ms-2 delete-brand" data-id="{{ $brand->id }}">Delete</button>
-                                <button class="btn btn-sm btn-warning ms-2 edit-brand" data-id="{{ $brand->id }}" data-name="{{ $brand->name }}">Edit</button>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <button type="button" id="loadBrands" class="btn btn-info">View Existing Brands</button>
+                    <div id="existingBrands" class="mt-3" style="display:none;">
+                        <h5>Existing Brands</h5>
+                        <div id="brandPagination"></div>
+                        <ul id="brandList"></ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -203,16 +190,12 @@
                         <button type="button" class="btn btn-primary" id="addUom">Add</button>
                     </form>
                     <hr>
-                    <h5>Existing UOMs</h5>
-                    <ul id="uomList">
-                        @foreach ($uoms as $uom)
-                            <li>
-                                {{ $uom->name }}
-                                <button class="btn btn-sm btn-danger ms-2 delete-uom" data-id="{{ $uom->id }}">Delete</button>
-                                <button class="btn btn-sm btn-warning ms-2 edit-uom" data-id="{{ $uom->id }}" data-name="{{ $uom->name }}">Edit</button>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <button type="button" id="loadUoms" class="btn btn-info">View Existing UOMs</button>
+                    <div id="existingUoms" class="mt-3" style="display:none;">
+                        <h5>Existing UOMs</h5>
+                        <div id="uomPagination"></div>
+                        <ul id="uomList"></ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -241,292 +224,489 @@
 
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const csrfToken = '{{ csrf_token() }}';
+    
+    // Add Category
+    document.getElementById('addCategory').addEventListener('click', function() {
+        const categoryName = document.getElementById('category_name').value;
 
-        // Add Category
-        document.getElementById('addCategory').addEventListener('click', function() {
-            const categoryName = document.getElementById('category_name').value;
-            if (categoryName) {
-                fetch('{{ route("product_categories.store") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ name: categoryName })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const categoryList = document.getElementById('categoryList');
-                        const newCategory = document.createElement('li');
-                        newCategory.innerHTML = `${data.category.name} 
-                            <button class="btn btn-sm btn-danger ms-2 delete-category" data-id="${data.category.id}">Delete</button>
-                            <button class="btn btn-sm btn-warning ms-2 edit-category" data-id="${data.category.id}" data-name="${data.category.name}">Edit</button>`;
-                        categoryList.appendChild(newCategory);
+        if (categoryName) {
+            fetch('{{ route("product_categories.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ name: categoryName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const categoryList = document.getElementById('categoryList');
+                    const newCategory = document.createElement('li');
+                    newCategory.innerHTML = `${data.category.name} 
+                        <button class="btn btn-sm btn-danger ms-2 delete-category" data-id="${data.category.id}">Delete</button>
+                        <button class="btn btn-sm btn-warning ms-2 edit-category" data-id="${data.category.id}" data-name="${data.category.name}">Edit</button>`;
+                    categoryList.appendChild(newCategory);
 
-                        const categorySelect = document.getElementById('category_id');
-                        const newOption = document.createElement('option');
-                        newOption.value = data.category.id;
-                        newOption.text = data.category.name;
-                        categorySelect.appendChild(newOption);
+                    const categorySelect = document.getElementById('category_id');
+                    const newOption = document.createElement('option');
+                    newOption.value = data.category.id;
+                    newOption.text = data.category.name;
+                    categorySelect.appendChild(newOption);
 
-                        document.getElementById('category_name').value = '';
-                    }
-                });
-            }
-        });
-
-        // Add Brand
-        document.getElementById('addBrand').addEventListener('click', function() {
-            const brandName = document.getElementById('brand_name').value;
-            if (brandName) {
-                fetch('{{ route("brands.store") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ name: brandName })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const brandList = document.getElementById('brandList');
-                        const newBrand = document.createElement('li');
-                        newBrand.innerHTML = `${data.brand.name} 
-                            <button class="btn btn-sm btn-danger ms-2 delete-brand" data-id="${data.brand.id}">Delete</button>
-                            <button class="btn btn-sm btn-warning ms-2 edit-brand" data-id="${data.brand.id}" data-name="${data.brand.name}">Edit</button>`;
-                        brandList.appendChild(newBrand);
-
-                        const brandSelect = document.getElementById('brand_id');
-                        const newOption = document.createElement('option');
-                        newOption.value = data.brand.id;
-                        newOption.text = data.brand.name;
-                        brandSelect.appendChild(newOption);
-
-                        document.getElementById('brand_name').value = '';
-                    }
-                });
-            }
-        });
-
-        // Add UOM
-        document.getElementById('addUom').addEventListener('click', function() {
-            const uomName = document.getElementById('uom_name').value;
-            if (uomName) {
-                fetch('{{ route("uoms.store") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ name: uomName })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const uomList = document.getElementById('uomList');
-                        const newUom = document.createElement('li');
-                        newUom.innerHTML = `${data.uom.name} 
-                            <button class="btn btn-sm btn-danger ms-2 delete-uom" data-id="${data.uom.id}">Delete</button>
-                            <button class="btn btn-sm btn-warning ms-2 edit-uom" data-id="${data.uom.id}" data-name="${data.uom.name}">Edit</button>`;
-                        uomList.appendChild(newUom);
-
-                        const uomSelect = document.getElementById('uom_id');
-                        const newOption = document.createElement('option');
-                        newOption.value = data.uom.id;
-                        newOption.text = data.uom.name;
-                        uomSelect.appendChild(newOption);
-
-                        document.getElementById('uom_name').value = '';
-                    }
-                });
-            }
-        });
-
-        // Delete Category
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('delete-category')) {
-                const id = e.target.getAttribute('data-id');
-                fetch(`/product_categories/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        e.target.parentElement.remove();
-                        const categorySelect = document.getElementById('category_id');
-                        const optionToRemove = categorySelect.querySelector(`option[value='${id}']`);
-                        if (optionToRemove) optionToRemove.remove();
-                    }
-                });
-            }
-        });
-
-        // Delete Brand
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('delete-brand')) {
-                const id = e.target.getAttribute('data-id');
-                fetch(`/brands/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        e.target.parentElement.remove();
-                        const brandSelect = document.getElementById('brand_id');
-                        const optionToRemove = brandSelect.querySelector(`option[value='${id}']`);
-                        if (optionToRemove) optionToRemove.remove();
-                    }
-                });
-            }
-        });
-
-        // Delete UOM
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('delete-uom')) {
-                const id = e.target.getAttribute('data-id');
-                fetch(`/uoms/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        e.target.parentElement.remove();
-                        const uomSelect = document.getElementById('uom_id');
-                        const optionToRemove = uomSelect.querySelector(`option[value='${id}']`);
-                        if (optionToRemove) optionToRemove.remove();
-                    }
-                });
-            }
-        });
-
-        // Edit Category
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('edit-category')) {
-                const id = e.target.getAttribute('data-id');
-                const name = e.target.getAttribute('data-name');
-                document.getElementById('edit_category_name').value = name;
-                document.getElementById('updateCategory').setAttribute('data-id', id);
-                $('#editCategoryModal').modal('show');
-            }
-        });
-
-        document.getElementById('updateCategory').addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const name = document.getElementById('edit_category_name').value;
-            if (name) {
-                fetch(`/product_categories/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ name: name })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const categoryList = document.getElementById('categoryList');
-                        const listItem = categoryList.querySelector(`button[data-id='${id}']`).parentElement;
-                        listItem.firstChild.textContent = name;
-                        const categorySelect = document.getElementById('category_id');
-                        const optionToUpdate = categorySelect.querySelector(`option[value='${id}']`);
-                        if (optionToUpdate) optionToUpdate.textContent = name;
-                        $('#editCategoryModal').modal('hide');
-                    }
-                });
-            }
-        });
-
-        // Edit Brand
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('edit-brand')) {
-                const id = e.target.getAttribute('data-id');
-                const name = e.target.getAttribute('data-name');
-                document.getElementById('edit_brand_name').value = name;
-                document.getElementById('updateBrand').setAttribute('data-id', id);
-                $('#editBrandModal').modal('show');
-            }
-        });
-
-        document.getElementById('updateBrand').addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const name = document.getElementById('edit_brand_name').value;
-            if (name) {
-                fetch(`/brands/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ name: name })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const brandList = document.getElementById('brandList');
-                        const listItem = brandList.querySelector(`button[data-id='${id}']`).parentElement;
-                        listItem.firstChild.textContent = name;
-                        const brandSelect = document.getElementById('brand_id');
-                        const optionToUpdate = brandSelect.querySelector(`option[value='${id}']`);
-                        if (optionToUpdate) optionToUpdate.textContent = name;
-                        $('#editBrandModal').modal('hide');
-                    }
-                });
-            }
-        });
-
-        // Edit UOM
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('edit-uom')) {
-                const id = e.target.getAttribute('data-id');
-                const name = e.target.getAttribute('data-name');
-                document.getElementById('edit_uom_name').value = name;
-                document.getElementById('updateUom').setAttribute('data-id', id);
-                $('#editUomModal').modal('show');
-            }
-        });
-
-        document.getElementById('updateUom').addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const name = document.getElementById('edit_uom_name').value;
-            if (name) {
-                fetch(`/uoms/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ name: name })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const uomList = document.getElementById('uomList');
-                        const listItem = uomList.querySelector(`button[data-id='${id}']`).parentElement;
-                        listItem.firstChild.textContent = name;
-                        const uomSelect = document.getElementById('uom_id');
-                        const optionToUpdate = uomSelect.querySelector(`option[value='${id}']`);
-                        if (optionToUpdate) optionToUpdate.textContent = name;
-                        $('#editUomModal').modal('hide');
-                    }
-                });
-            }
-        });
+                    document.getElementById('category_name').value = '';
+                } else {
+                    console.error('Failed to add category:', data.message);
+                }
+            })
+            .catch(error => console.error('Error adding category:', error));
+        }
     });
+
+    // Edit Category
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('edit-category')) {
+            const id = e.target.getAttribute('data-id');
+            const name = e.target.getAttribute('data-name');
+            document.getElementById('edit_category_name').value = name;
+            document.getElementById('updateCategory').setAttribute('data-id', id);
+            $('#editCategoryModal').modal('show');
+        }
+    });
+
+    document.getElementById('updateCategory').addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const name = document.getElementById('edit_category_name').value;
+
+        if (name) {
+            fetch(`/product_categories/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const listItem = document.querySelector(`button[data-id='${id}']`).parentElement;
+                    listItem.firstChild.textContent = name;
+                    
+                    const categorySelect = document.getElementById('category_id');
+                    const optionToUpdate = categorySelect.querySelector(`option[value='${id}']`);
+                    if (optionToUpdate) optionToUpdate.textContent = name;
+                    
+                    $('#editCategoryModal').modal('hide');
+                }
+            })
+            .catch(error => console.error('Error updating category:', error));
+        }
+    });
+
+    // Add Brand
+    document.getElementById('addBrand').addEventListener('click', function() {
+        const brandName = document.getElementById('brand_name').value;
+
+        if (brandName) {
+            fetch('{{ route("brands.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ name: brandName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const brandList = document.getElementById('brandList');
+                    const newBrand = document.createElement('li');
+                    newBrand.innerHTML = `${data.brand.name} 
+                        <button class="btn btn-sm btn-danger ms-2 delete-brand" data-id="${data.brand.id}">Delete</button>
+                        <button class="btn btn-sm btn-warning ms-2 edit-brand" data-id="${data.brand.id}" data-name="${data.brand.name}">Edit</button>`;
+                    brandList.appendChild(newBrand);
+
+                    const brandSelect = document.getElementById('brand_id');
+                    const newOption = document.createElement('option');
+                    newOption.value = data.brand.id;
+                    newOption.text = data.brand.name;
+                    brandSelect.appendChild(newOption);
+
+                    document.getElementById('brand_name').value = '';
+                } else {
+                    console.error('Failed to add brand:', data.message);
+                }
+            })
+            .catch(error => console.error('Error adding brand:', error));
+        }
+    });
+
+    // Edit Brand
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('edit-brand')) {
+            const id = e.target.getAttribute('data-id');
+            const name = e.target.getAttribute('data-name');
+            document.getElementById('edit_brand_name').value = name;
+            document.getElementById('updateBrand').setAttribute('data-id', id);
+            $('#editBrandModal').modal('show');
+        }
+    });
+
+    document.getElementById('updateBrand').addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const name = document.getElementById('edit_brand_name').value;
+        if (name) {
+            fetch(`/brands/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const brandList = document.getElementById('brandList');
+                    const listItem = brandList.querySelector(`button[data-id='${id}']`).parentElement;
+                    listItem.firstChild.textContent = name;
+                    const brandSelect = document.getElementById('brand_id');
+                    const optionToUpdate = brandSelect.querySelector(`option[value='${id}']`);
+                    if (optionToUpdate) optionToUpdate.textContent = name;
+                    $('#editBrandModal').modal('hide');
+                }
+            })
+            .catch(error => console.error('Error updating brand:', error));
+        }
+    });
+
+    // Add UOM
+    document.getElementById('addUom').addEventListener('click', function() {
+        const uomName = document.getElementById('uom_name').value;
+
+        if (uomName) {
+            fetch('{{ route("uoms.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ name: uomName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const uomList = document.getElementById('uomList');
+                    const newUom = document.createElement('li');
+                    newUom.innerHTML = `${data.uom.name} 
+                        <button class="btn btn-sm btn-danger ms-2 delete-uom" data-id="${data.uom.id}">Delete</button>
+                        <button class="btn btn-sm btn-warning ms-2 edit-uom" data-id="${data.uom.id}" data-name="${data.uom.name}">Edit</button>`;
+                    uomList.appendChild(newUom);
+
+                    const uomSelect = document.getElementById('uom_id');
+                    const newOption = document.createElement('option');
+                    newOption.value = data.uom.id;
+                    newOption.text = data.uom.name;
+                    uomSelect.appendChild(newOption);
+
+                    document.getElementById('uom_name').value = '';
+                } else {
+                    console.error('Failed to add UOM:', data.message);
+                }
+            })
+            .catch(error => console.error('Error adding UOM:', error));
+        }
+    });
+
+    // Edit UOM
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('edit-uom')) {
+            const id = e.target.getAttribute('data-id');
+            const name = e.target.getAttribute('data-name');
+            document.getElementById('edit_uom_name').value = name;
+            document.getElementById('updateUom').setAttribute('data-id', id);
+            $('#editUomModal').modal('show');
+        }
+    });
+
+    document.getElementById('updateUom').addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const name = document.getElementById('edit_uom_name').value;
+        if (name) {
+            fetch(`/uoms/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const uomList = document.getElementById('uomList');
+                    const listItem = uomList.querySelector(`button[data-id='${id}']`).parentElement;
+                    listItem.firstChild.textContent = name;
+                    const uomSelect = document.getElementById('uom_id');
+                    const optionToUpdate = uomSelect.querySelector(`option[value='${id}']`);
+                    if (optionToUpdate) optionToUpdate.textContent = name;
+                    $('#editUomModal').modal('hide');
+                }
+            })
+            .catch(error => console.error('Error updating UOM:', error));
+        }
+    });
+
+    // Load Existing Categories
+    document.getElementById('loadCategories').addEventListener('click', function() {
+        fetchCategories(1);  // Start with the first page
+    });
+
+    function fetchCategories(page) {
+        fetch(`/product_categories?page=${page}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const categoryList = document.getElementById('categoryList');
+                const pagination = document.getElementById('categoryPagination');
+                
+                categoryList.innerHTML = '';
+                pagination.innerHTML = '';
+
+                // Populate Categories
+                data.categories.forEach(category => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `${category.name} 
+                        <button class="btn btn-sm btn-danger ms-2 delete-category" data-id="${category.id}">Delete</button>
+                        <button class="btn btn-sm btn-warning ms-2 edit-category" data-id="${category.id}" data-name="${category.name}">Edit</button>`;
+                    categoryList.appendChild(listItem);
+                });
+
+                // Generate Pagination Controls
+                const total_pages = data.pagination.last_page;
+                const current_page = data.pagination.current_page;
+
+                for (let i = 1; i <= total_pages; i++) {
+                    const pageItem = document.createElement('li');
+                    pageItem.classList.add('page-item');
+                    if (i === current_page) {
+                        pageItem.classList.add('active');
+                    }
+
+                    const pageLink = document.createElement('a');
+                    pageLink.classList.add('page-link');
+                    pageLink.href = '#';
+                    pageLink.textContent = i;
+
+                    pageLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        fetchCategories(i);
+                    });
+
+                    pageItem.appendChild(pageLink);
+                    pagination.appendChild(pageItem);
+                }
+
+                document.getElementById('existingCategories').style.display = 'block';
+            })
+            .catch(error => console.error('Error fetching categories:', error));
+    }
+
+    // Load Existing Brands
+    document.getElementById('loadBrands').addEventListener('click', function() {
+        fetchBrands(1);  // Start with the first page
+    });
+
+    function fetchBrands(page) {
+        fetch(`/brands?page=${page}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const brandList = document.getElementById('brandList');
+                const pagination = document.getElementById('brandPagination');
+                
+                brandList.innerHTML = '';
+                pagination.innerHTML = '';
+
+                // Populate Brands
+                data.brands.forEach(brand => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `${brand.name} 
+                        <button class="btn btn-sm btn-danger ms-2 delete-brand" data-id="${brand.id}">Delete</button>
+                        <button class="btn btn-sm btn-warning ms-2 edit-brand" data-id="${brand.id}" data-name="${brand.name}">Edit</button>`;
+                    brandList.appendChild(listItem);
+                });
+
+                // Generate Pagination Controls
+                const total_pages = data.pagination.last_page;
+                const current_page = data.pagination.current_page;
+
+                for (let i = 1; i <= total_pages; i++) {
+                    const pageItem = document.createElement('li');
+                    pageItem.classList.add('page-item');
+                    if (i === current_page) {
+                        pageItem.classList.add('active');
+                    }
+
+                    const pageLink = document.createElement('a');
+                    pageLink.classList.add('page-link');
+                    pageLink.href = '#';
+                    pageLink.textContent = i;
+
+                    pageLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        fetchBrands(i);
+                    });
+
+                    pageItem.appendChild(pageLink);
+                    pagination.appendChild(pageItem);
+                }
+
+                document.getElementById('existingBrands').style.display = 'block';
+            })
+            .catch(error => console.error('Error fetching brands:', error));
+    }
+
+    // Load Existing UOMs
+    document.getElementById('loadUoms').addEventListener('click', function() {
+        fetchUoms(1);  // Start with the first page
+    });
+
+    function fetchUoms(page) {
+        fetch(`/uoms?page=${page}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const uomList = document.getElementById('uomList');
+                const pagination = document.getElementById('uomPagination');
+                
+                uomList.innerHTML = '';
+                pagination.innerHTML = '';
+
+                // Populate UOMs
+                data.uoms.forEach(uom => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `${uom.name} 
+                        <button class="btn btn-sm btn-danger ms-2 delete-uom" data-id="${uom.id}">Delete</button>
+                        <button class="btn btn-sm btn-warning ms-2 edit-uom" data-id="${uom.id}" data-name="${uom.name}">Edit</button>`;
+                    uomList.appendChild(listItem);
+                });
+
+                // Generate Pagination Controls
+                const total_pages = data.pagination.last_page;
+                const current_page = data.pagination.current_page;
+
+                for (let i = 1; i <= total_pages; i++) {
+                    const pageItem = document.createElement('li');
+                    pageItem.classList.add('page-item');
+                    if (i === current_page) {
+                        pageItem.classList.add('active');
+                    }
+
+                    const pageLink = document.createElement('a');
+                    pageLink.classList.add('page-link');
+                    pageLink.href = '#';
+                    pageLink.textContent = i;
+
+                    pageLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        fetchUoms(i);
+                    });
+
+                    pageItem.appendChild(pageLink);
+                    pagination.appendChild(pageItem);
+                }
+
+                document.getElementById('existingUoms').style.display = 'block';
+            })
+            .catch(error => console.error('Error fetching UOMs:', error));
+    }
+
+    // Delete Category
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('delete-category')) {
+            const id = e.target.getAttribute('data-id');
+            fetch(`/product_categories/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    e.target.parentElement.remove();
+                    const categorySelect = document.getElementById('category_id');
+                    const optionToRemove = categorySelect.querySelector(`option[value='${id}']`);
+                    if (optionToRemove) optionToRemove.remove();
+                }
+            })
+            .catch(error => console.error('Error deleting category:', error));
+        }
+    });
+
+    // Delete Brand
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('delete-brand')) {
+            const id = e.target.getAttribute('data-id');
+            fetch(`/brands/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    e.target.parentElement.remove();
+                    const brandSelect = document.getElementById('brand_id');
+                    const optionToRemove = brandSelect.querySelector(`option[value='${id}']`);
+                    if (optionToRemove) optionToRemove.remove();
+                }
+            })
+            .catch(error => console.error('Error deleting brand:', error));
+        }
+    });
+
+    // Delete UOM
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('delete-uom')) {
+            const id = e.target.getAttribute('data-id');
+            fetch(`/uoms/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    e.target.parentElement.remove();
+                    const uomSelect = document.getElementById('uom_id');
+                    const optionToRemove = uomSelect.querySelector(`option[value='${id}']`);
+                    if (optionToRemove) optionToRemove.remove();
+                }
+            })
+            .catch(error => console.error('Error deleting UOM:', error));
+        }
+    });
+});
+
 </script>
-@endsection
+@endpush

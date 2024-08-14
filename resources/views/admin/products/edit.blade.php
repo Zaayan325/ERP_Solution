@@ -54,14 +54,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="price" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="price" name="price" step="0.01" value="{{ $product->price }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="stock" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="stock" name="stock" value="{{ $product->stock }}" required>
-                            </div>
                             <button type="submit" class="btn btn-primary">Update</button>
                         </form>
 

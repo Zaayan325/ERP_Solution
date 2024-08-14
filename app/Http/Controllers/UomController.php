@@ -9,14 +9,20 @@ class UomController extends Controller
 {
     public function index()
     {
-        $uoms = Uom::all();
-        return view('admin.uoms.index', compact('uoms'));
+        $uoms = Uom::paginate(10); // 10 items per page
+        return response()->json([
+            'uoms' => $uoms->items(),
+            'pagination' => [
+                'total' => $uoms->total(),
+                'per_page' => $uoms->perPage(),
+                'current_page' => $uoms->currentPage(),
+                'last_page' => $uoms->lastPage(),
+                'from' => $uoms->firstItem(),
+                'to' => $uoms->lastItem()
+            ]
+        ]);
     }
 
-    public function create()
-    {
-        return view('admin.uoms.create');
-    }
 
     public function store(Request $request)
     {
@@ -25,10 +31,7 @@ class UomController extends Controller
         return response()->json(['success' => true, 'uom' => $uom]);
     }
 
-    public function edit(Uom $uom)
-    {
-        return view('admin.uoms.edit', compact('uom'));
-    }
+    
 
     public function update(Request $request, $id)
     {

@@ -9,13 +9,18 @@ class BrandController extends Controller
 {
     public function index()
     {
-        $brands = Brand::all();
-        return view('admin.brands.index', compact('brands'));
-    }
-
-    public function create()
-    {
-        return view('admin.brands.create');
+        $brands = Brand::paginate(10); // 10 items per page
+        return response()->json([
+            'brands' => $brands->items(),
+            'pagination' => [
+                'total' => $brands->total(),
+                'per_page' => $brands->perPage(),
+                'current_page' => $brands->currentPage(),
+                'last_page' => $brands->lastPage(),
+                'from' => $brands->firstItem(),
+                'to' => $brands->lastItem()
+            ]
+        ]);
     }
 
     public function store(Request $request)
@@ -25,10 +30,6 @@ class BrandController extends Controller
         return response()->json(['success' => true, 'brand' => $brand]);
     }
 
-    public function edit(Brand $brand)
-    {
-        return view('admin.brands.edit', compact('brand'));
-    }
 
     public function update(Request $request, $id)
     {

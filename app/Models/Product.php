@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Product_Category;
+use App\Models\ProductCategory;
 use App\Models\Brand;
 use App\Models\UOM;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,14 +16,12 @@ class Product extends Model
         'name',
         'product_category_id',
         'brand_id',
-        'uom_id',
-        'price',
-        'stock'
+        'uom_id'
     ];
 
     public function category()
     {
-        return $this->belongsTo(Product_Category::class, 'product_category_id');
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
     public function brand()

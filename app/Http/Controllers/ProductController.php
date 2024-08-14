@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Product_Category;
+use App\Models\ProductCategory;
 use App\Models\Brand;
 use App\Models\UOM;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        $productCategories = Product_Category::all();
+        $productCategories = ProductCategory::all();
         $brands = Brand::all();
         $uoms = Uom::all();
         return view('admin.products.create', compact('productCategories', 'brands', 'uoms'));
@@ -34,18 +34,21 @@ class ProductController extends Controller
             'category_id' => 'required|exists:product_categories,id',
             'brand_id' => 'required|exists:brands,id',
             'uom_id' => 'required|exists:uoms,id',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
         ]);
 
-        Product::create($request->all());
-
+        Product::create([
+            'name' => $request->name,
+            'product_category_id' => $request->category_id, // Ensure this line is correct
+            'brand_id' => $request->brand_id,
+            'uom_id' => $request->uom_id,
+        ]);
+        
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
     public function edit(Product $product)
     {
-        $productCategories = Product_Category::all();
+        $productCategories = ProductCategory::all();
         $brands = Brand::all();
         $uoms = Uom::all();
         return view('admin.products.edit', compact('product', 'productCategories', 'brands', 'uoms'));
@@ -58,8 +61,6 @@ class ProductController extends Controller
             'category_id' => 'required|exists:product_categories,id',
             'brand_id' => 'required|exists:brands,id',
             'uom_id' => 'required|exists:uoms,id',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
         ]);
 
         $product->update($request->all());

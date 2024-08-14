@@ -22,8 +22,6 @@
                         <p><strong>Category:</strong> {{ $product->category->name }}</p>
                         <p><strong>Brand:</strong> {{ $product->brand->name }}</p>
                         <p><strong>Unit of Measurement:</strong> {{ $product->uom->name }}</p>
-                        <p><strong>Price:</strong> {{ $product->price }}</p>
-                        <p><strong>Stock:</strong> {{ $product->stock }}</p>
                         <a href="{{ route('products.index') }}" class="btn btn-primary">Back to Products</a>
                     </div>
                 </div>

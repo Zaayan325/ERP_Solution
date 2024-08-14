@@ -27,8 +27,6 @@
                                     <th scope="col">Category</th>
                                     <th scope="col">Brand</th>
                                     <th scope="col">Unit of Measurement</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Stock</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -40,8 +38,6 @@
                                         <td>{{ $product->category->name }}</td>
                                         <td>{{ $product->brand->name }}</td>
                                         <td>{{ $product->uom->name }}</td>
-                                        <td>{{ $product->price }}</td>
-                                        <td>{{ $product->stock }}</td>
                                         <td>
                                             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>
                                             <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
