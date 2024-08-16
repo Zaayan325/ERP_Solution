@@ -6,7 +6,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 @stack('meta')
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title>Dashboard - Track Point</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
