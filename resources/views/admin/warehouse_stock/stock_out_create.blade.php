@@ -1,13 +1,15 @@
 @extends('admin.layouts.main')
-
+@push('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush    
 @section('content')
     <div class="pagetitle">
-        <h1>Create Sales Return</h1>
+        <h1>Stock Out</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('sales_returns.index') }}">Sales Returns</a></li>
-                <li class="breadcrumb-item active">Create Sales Return</li>
+                <li class="breadcrumb-item"><a href="{{ route('warehouse_stock.index') }}">Warehouse Stocks</a></li>
+                <li class="breadcrumb-item active">Stock Out</li>
             </ol>
         </nav>
     </div>
@@ -17,41 +19,39 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">New Sales Return</h5>
+                        <h5 class="card-title">Stock Out</h5>
 
-                        <form action="{{ route('sales_returns.store') }}" method="POST">
+                        <form action="{{ route('warehouse_stock_out.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="customer_id" class="form-label">Customer</label>
-                                <select class="form-control" id="customer_id" name="customer_id" required>
-                                    <option value="">Select Customer</option>
-                                    @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                <label for="warehouse_id" class="form-label">Warehouse</label>
+                                <select class="form-control" id="warehouse_id" name="warehouse_id" required>
+                                    @foreach ($warehouses as $warehouse)
+                                        <option value="{{ $warehouse->id }}">{{ $warehouse->name }} ({{ $warehouse->location }})</option>
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="mb-3">
                                 <label for="product_id" class="form-label">Product</label>
                                 <select class="form-control" id="product_id" name="product_id" required>
-                                    <option value="">Select Product</option>
                                     @foreach ($products as $product)
-                                        <option value="{{ $product->id }}">{{ $product->name }} - {{ $product->brand->name }}</option>
+                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity</label>
                                 <input type="number" class="form-control" id="quantity" name="quantity" required>
                             </div>
-
                             <div class="mb-3">
-                                <label for="price" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="price" name="price" required>
+                                <label for="batch_number" class="form-label">Batch Number</label>
+                                <input type="text" class="form-control" id="batch_number" name="batch_number">
                             </div>
-
-                            <button type="submit" class="btn btn-primary">Create Sales Return</button>
+                            <div class="mb-3">
+                                <label for="reason" class="form-label">Reason</label>
+                                <textarea class="form-control" id="reason" name="reason"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
 
                     </div>

@@ -59,15 +59,27 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('warehouses', WarehouseController::class);
     Route::resource('warehouse_stock', WarehouseStockController::class);
+    Route::post('/warehouses/stock-out', [WarehouseController::class, 'stockOut'])->name('warehouses.stockOut');
+
+    Route::get('/stock_out/create', [WarehouseStockController::class, 'createStockOut'])->name('warehouse_stock_out.create');
+    Route::post('/stock_out', [WarehouseStockController::class, 'stockOut'])->name('warehouse_stock_out.store');
+
+    Route::get('/adjustments', [WarehouseStockController::class, 'showAdjustments'])->name('warehouse_stock.adjustments');
+    Route::post('/adjust', [WarehouseStockController::class, 'adjustStock'])->name('warehouse_stock.adjust');
+
+    Route::get('/current_stock', [WarehouseStockController::class, 'showCurrentStock'])->name('warehouse_stock.current_stock');
+
+    Route::post('/import', [WarehouseStockController::class, 'importStock'])->name('warehouse_stock.import');
+    Route::get('/export', [WarehouseStockController::class, 'exportStock'])->name('warehouse_stock.export');
+    Route::get('/show', [WarehouseStockController::class, 'showStock'])->name('warehouse_stock.show');
+
 
     Route::resource('products', ProductController::class);
     Route::resource('product_categories', ProductCategoryController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('uoms', UomController::class);
-    // Route::resource('product_categories', ProductCategoryController::class)->only(['store', 'update', 'destroy']);
-    // Route::resource('brands', BrandController::class)->only(['store', 'update', 'destroy']);
-    // Route::resource('uoms', UomController::class)->only(['store', 'update', 'destroy']);
-
+   
+    
     Route::resource('stock_categories', StockCategoryController::class);
     Route::resource('stock_uoms', StockUomController::class);
     Route::resource('stock_brands', StockBrandController::class);

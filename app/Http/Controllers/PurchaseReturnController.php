@@ -30,7 +30,6 @@ class PurchaseReturnController extends Controller
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -43,7 +42,6 @@ class PurchaseReturnController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price,
                 'total' => $total,
-                'date' => $request->date,
             ]);
 
             // Decrease product stock
@@ -72,7 +70,6 @@ class PurchaseReturnController extends Controller
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request, $purchaseReturn) {
@@ -88,11 +85,9 @@ class PurchaseReturnController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price,
                 'total' => $total,
-                'date' => $request->date,
             ]);
 
             // Adjust the product stock for the updated return
-            $product = Product::findOrFail($request->product_id);
             $product->update(['stock' => $product->stock - $request->quantity]);
         });
 

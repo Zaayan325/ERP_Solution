@@ -1,4 +1,4 @@
-<?php
+<?php   
 
 namespace App\Http\Controllers;
 
@@ -6,10 +6,8 @@ use App\Models\Sale;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\SalesItem;
-use App\Models\SalesReturn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 
 class SaleController extends Controller
 {
@@ -30,7 +28,6 @@ class SaleController extends Controller
     {
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
-            'date' => 'required|date',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -42,7 +39,6 @@ class SaleController extends Controller
 
             $sale = Sale::create([
                 'customer_id' => $request->customer_id,
-                'date' => $request->date,
                 'total_amount' => 0, // temporary value
             ]);
 
@@ -81,7 +77,6 @@ class SaleController extends Controller
     {
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
-            'date' => 'required|date',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -101,7 +96,6 @@ class SaleController extends Controller
             // Update the sale
             $sale->update([
                 'customer_id' => $request->customer_id,
-                'date' => $request->date,
             ]);
 
             // Add the new items

@@ -19,7 +19,11 @@ class SalesReturnController extends Controller
     public function create()
     {
         $products = Product::with('brand')->get();
+        
+        // Retrieve all customers
         $customers = Customer::all();
+        
+        // Pass the variables to the view
         return view('admin.sales_returns.create', compact('products', 'customers'));
     }
 
@@ -30,7 +34,6 @@ class SalesReturnController extends Controller
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -43,7 +46,6 @@ class SalesReturnController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price,
                 'total' => $total,
-                'date' => $request->date,
             ]);
 
             // Increase product stock
@@ -72,7 +74,6 @@ class SalesReturnController extends Controller
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'date' => 'required|date',
         ]);
 
         DB::transaction(function () use ($request, $salesReturn) {
@@ -88,7 +89,6 @@ class SalesReturnController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price,
                 'total' => $total,
-                'date' => $request->date,
             ]);
 
             // Adjust the product stock for the updated return

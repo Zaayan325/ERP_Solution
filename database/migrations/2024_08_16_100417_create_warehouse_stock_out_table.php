@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sales_returns', function (Blueprint $table) {
+        Schema::create('warehouse_stock_out', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customers');
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
-            $table->decimal('price', 10, 2);
-            $table->decimal('total', 10, 2);
+            $table->string('batch_number')->nullable();
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales_returns');
+        Schema::dropIfExists('warehouse_stock_out');
     }
 };

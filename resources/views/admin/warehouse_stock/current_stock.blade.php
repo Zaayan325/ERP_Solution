@@ -24,8 +24,6 @@
                                     <th>#</th>
                                     <th>Warehouse</th>
                                     <th>Product</th>
-                                    <th>Category</th>
-                                    <th>Brand</th>
                                     <th>Batch Number</th>
                                     <th>Expiry Date</th>
                                     <th>Quantity</th>
@@ -33,13 +31,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($warehouseStocks as $stock)
+                                @foreach ($stocks as $stock)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $stock->warehouse->name }}</td>
                                         <td>{{ $stock->product->name }}</td>
-                                        <td>{{ $stock->product->category->name }}</td>
-                                        <td>{{ $stock->product->brand->name }}</td>
                                         <td>{{ $stock->batch_number ?? 'N/A' }}</td>
                                         <td>{{ $stock->expiry_date ? $stock->expiry_date->format('Y-m-d') : 'N/A' }}</td>
                                         <td>{{ $stock->quantity }}</td>
@@ -49,6 +45,7 @@
                             </tbody>
                         </table>
 
+                        {{ $stocks->links() }}
                     </div>
                 </div>
             </div>

@@ -5,21 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SalesReturn extends Model
+class WarehouseStockAdjustment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'customer_id',
-        'product_id',
-        'quantity',
-        'price',
-        'total',
-    ];
-
-    public function customer()
+    public function warehouse()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Warehouse::class);
     }
 
     public function product()

@@ -3,8 +3,6 @@
 @section('content')
     <div class="pagetitle">
         <h1>Purchase Returns</h1>
-        <a href="{{ route('purchase_returns.create') }}" class="btn btn-primary mb-3">Add Purchase Return</a>
-
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
@@ -19,43 +17,45 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Purchase Return List</h5>
-                        <table class="table">
+
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Supplier</th>
                                     <th>Product</th>
                                     <th>Quantity</th>
-                                    <th>Price</th>
                                     <th>Total</th>
                                     <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($purchaseReturns as $return)
+                                @foreach($purchaseReturns as $purchaseReturn)
                                     <tr>
-                                        <td>{{ $return->id }}</td>
-                                        <td>{{ $return->supplier->name }}</td>
-                                        <td>{{ $return->product->name }} ({{ $return->product->brand->name }})</td>
-                                        <td>{{ $return->quantity }}</td>
-                                        <td>{{ $return->price }}</td>
-                                        <td>{{ $return->total }}</td>
-                                        <td>{{ $return->date }}</td>
+                                        <th>{{ $loop->iteration }}</th>
+                                        <td>{{ $purchaseReturn->supplier->name }}</td>
+                                        <td>{{ $purchaseReturn->product->name }} - {{ $purchaseReturn->product->brand->name }}</td>
+                                        <td>{{ $purchaseReturn->quantity }}</td>
+                                        <td>{{ $purchaseReturn->total }}</td>
+                                        <td>{{ $purchaseReturn->created_at->format('Y-m-d') }}</td>
                                         <td>
-                                            <a href="{{ route('purchase_returns.show', $return->id) }}" class="btn btn-info btn-sm">View</a>
-                                            <a href="{{ route('purchase_returns.edit', $return->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('purchase_returns.destroy', $return->id) }}" method="POST" style="display:inline-block;">
+                                            <a href="{{ route('purchase_returns.show', $purchaseReturn->id) }}" class="btn btn-info btn-sm">View</a>
+                                            <a href="{{ route('purchase_returns.edit', $purchaseReturn->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('purchase_returns.destroy', $purchaseReturn->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $purchaseReturns->links() }}
+
+                        <div class="d-flex justify-content-center">
+                            {{ $purchaseReturns->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

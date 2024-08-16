@@ -26,7 +26,7 @@
         </a>
       </li>
     </ul>
-  </li><!-- End Components Nav -->
+  </li><!-- End Products Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
@@ -44,8 +44,23 @@
           <i class="bi bi-circle"></i><span>Add Warehouse Stock</span>
         </a>
       </li>
+      <li>
+        <a href="{{ route('warehouse_stock_out.create') }}">
+          <i class="bi bi-circle"></i><span>Stock Out</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('warehouse_stock.adjustments') }}">
+          <i class="bi bi-circle"></i><span>View Stock Adjustments</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('warehouse_stock.current_stock') }}">
+          <i class="bi bi-circle"></i><span>View Current Stock</span>
+        </a>
+      </li>
     </ul>
-  </li><!-- End Forms Nav -->
+  </li><!-- End Warehouse Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -64,18 +79,18 @@
       </li>
       <li>
         <a href="{{ route('stock_uoms.index') }}">
-          <i class="bi bi-circle"></i><span>View Stock Unit</span>
+          <i class="bi bi-circle"></i><span>View Stock Units</span>
         </a>
       </li>
     </ul>
-  </li><!-- End Tables Nav -->
+  </li><!-- End Stock Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-bar-chart"></i><span>Suppliers</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-    <li>
+      <li>
         <a href="{{ route('suppliers.index') }}">
           <i class="bi bi-circle"></i><span>View Suppliers</span>
         </a>
@@ -85,17 +100,58 @@
           <i class="bi bi-circle"></i><span>Add Suppliers</span>
         </a>
       </li>
-      
     </ul>
-  </li><!-- End Charts Nav -->
+  </li><!-- End Suppliers Nav -->
 
+<<<<<<< Updated upstream
 
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-gem"></i><span>Sales</span><i class="bi bi-chevron-down ms-auto"></i>
+=======
+  <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#icons-customers-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-people"></i><span>Customers</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-    <li>
+    <ul id="icons-customers-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <li>
+        <a href="{{ route('customers.index') }}">
+          <i class="bi bi-circle"></i><span>View Customers</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('customers.create') }}">
+          <i class="bi bi-circle"></i><span>Add Customers</span>
+        </a>
+      </li>
+    </ul>
+  </li><!-- End Customers Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#icons-inventory-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-box-seam"></i><span>Inventory</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="icons-inventory-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <li>
+        <a href="{{ route('inventory.index') }}">
+          <i class="bi bi-circle"></i><span>View Inventory</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('inventory.create') }}">
+          <i class="bi bi-circle"></i><span>Add Inventory</span>
+        </a>
+      </li>
+    </ul>
+  </li><!-- End Inventory Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#icons-sales-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-cash"></i><span>Sales</span><i class="bi bi-chevron-down ms-auto"></i>
+>>>>>>> Stashed changes
+    </a>
+    <ul id="icons-sales-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <li>
         <a href="{{ route('sales.index') }}">
           <i class="bi bi-circle"></i><span>View Sales</span>
         </a>
@@ -105,34 +161,30 @@
           <i class="bi bi-circle"></i><span>Add Sales</span>
         </a>
       </li>
-
       <li>
         <a href="{{ route('sales_items.index') }}">
           <i class="bi bi-circle"></i><span>View Sales Items</span>
         </a>
       </li>
-
       <li>
         <a href="{{ route('payments.index') }}">
           <i class="bi bi-circle"></i><span>View Payments</span>
         </a>
       </li>
-
       <li>
         <a href="{{ route('sales_returns.index') }}">
           <i class="bi bi-circle"></i><span>View Sale Returns</span>
         </a>
       </li>
-      
     </ul>
-  </li><!-- End Icons Nav -->
+  </li><!-- End Sales Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-gem"></i><span>Purchases</span><i class="bi bi-chevron-down ms-auto"></i>
+    <a class="nav-link collapsed" data-bs-target="#icons-purchases-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-bag"></i><span>Purchases</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-    <li>
+    <ul id="icons-purchases-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <li>
         <a href="{{ route('purchases.index') }}">
           <i class="bi bi-circle"></i><span>View Purchases</span>
         </a>
@@ -142,20 +194,18 @@
           <i class="bi bi-circle"></i><span>Add Purchase</span>
         </a>
       </li>
-
       <li>
         <a href="{{ route('purchase_items.index') }}">
           <i class="bi bi-circle"></i><span>View Purchase Items</span>
         </a>
       </li>
-
       <li>
         <a href="{{ route('purchase_returns.index') }}">
           <i class="bi bi-circle"></i><span>View Purchase Returns</span>
         </a>
       </li>
-      
     </ul>
+<<<<<<< Updated upstream
   </li><!-- End Icons Nav -->
 
 
@@ -194,15 +244,75 @@
         </a>
       </li>
     </ul>
+=======
+  </li><!-- End Purchases Nav -->
+>>>>>>> Stashed changes
 
   <li class="nav-heading">Reports</li>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('reports.index') }}">
-            <i class="bi bi-file-earmark-text"></i>
-            <span>Reports</span>
-        </a>
-    </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="{{ route('reports.index') }}">
+      <i class="bi bi-file-earmark-text"></i>
+      <span>Reports</span>
+    </a>
+  </li><!-- End Reports Nav -->
 
+<<<<<<< Updated upstream
  
 </aside><!-- End Sidebar-->
+=======
+  <li class="nav-heading">Pages</li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="">
+      <i class="bi bi-person"></i>
+      <span>Profile</span>
+    </a>
+  </li><!-- End Profile Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="">
+      <i class="bi bi-question-circle"></i>
+      <span>F.A.Q</span>
+    </a>
+  </li><!-- End F.A.Q Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="">
+      <i class="bi bi-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </li><!-- End Contact Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="">
+      <i class="bi bi-card-list"></i>
+      <span>Register</span>
+    </a>
+  </li><!-- End Register Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="">
+      <i class="bi bi-box-arrow-in-right"></i>
+      <span>Login</span>
+    </a>
+  </li><!-- End Login Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="">
+      <i class="bi bi-dash-circle"></i>
+      <span>Error 404</span>
+    </a>
+  </li><!-- End Error 404 Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="">
+      <i class="bi bi-file-earmark"></i>
+      <span>Blank</span>
+    </a>
+  </li><!-- End Blank Page Nav -->
+
+</ul>
+
+</aside><!-- End Sidebar -->
+>>>>>>> Stashed changes

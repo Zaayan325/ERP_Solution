@@ -6,7 +6,6 @@ use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\PurchaseItem;
-use App\Models\PurchaseReturn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,7 +28,6 @@ class PurchaseController extends Controller
     {
         $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
-            'date' => 'required|date',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -41,7 +39,6 @@ class PurchaseController extends Controller
 
             $purchase = Purchase::create([
                 'supplier_id' => $request->supplier_id,
-                'date' => $request->date,
                 'total_amount' => 0, // temporary value
             ]);
 
@@ -80,7 +77,6 @@ class PurchaseController extends Controller
     {
         $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
-            'date' => 'required|date',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -100,7 +96,6 @@ class PurchaseController extends Controller
             // Update the purchase
             $purchase->update([
                 'supplier_id' => $request->supplier_id,
-                'date' => $request->date,
             ]);
 
             // Add the new items
