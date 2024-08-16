@@ -4,34 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Models\Warehouse;
 use App\Models\WarehouseStock;
+use App\Models\Product;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 
 class WarehouseStockController extends Controller
 {
     public function index()
     {
-        $warehouseStocks = WarehouseStock::with('warehouse')->get();
+        $warehouseStocks = WarehouseStock::with('warehouse','product')->get();
         return view('admin.warehouse_stock.index', compact('warehouseStocks'));
     }
 
     public function create()
     {
         $warehouses = Warehouse::all();
-        return view('admin.warehouse_stock.create', compact('warehouses'));
+        $products = Product::all();
+        return view('admin.warehouse_stock.create', compact('warehouses','products'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'warehouse_id' => 'required|exists:warehouses,id',
-            'product_name' => 'required',
-            'quantity' => 'required|integer|min:0',
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+            'batch_number' => 'nullable|string|max:50',
+            'expiry_date' => 'nullable|date',
         ]);
-
-        WarehouseStock::create([
+    
+        $stock = WarehouseStock::create([
             'warehouse_id' => $request->warehouse_id,
-            'product_name' => $request->product_name,
+            'product_id' => $request->product_id,
             'quantity' => $request->quantity,
+            'batch_number' => $request->batch_number,
+            'expiry_date' => $request->expiry_date,
         ]);
 
         return redirect()->route('warehouse_stock.index')->with('success', 'Stock added successfully.');
@@ -40,18 +47,24 @@ class WarehouseStockController extends Controller
     public function edit(WarehouseStock $warehouseStock)
     {
         $warehouses = Warehouse::all();
-        return view('admin.warehouse_stock.edit', compact('warehouseStock', 'warehouses'));
+        $products = Product::all();
+        return view('admin.warehouse_stock.edit', compact('warehouseStock', 'warehouses','products'));
     }
 
-    public function update(Request $request, WarehouseStock $warehouseStock)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'product_name' => 'required',
-            'quantity' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:1',
+            'batch_number' => 'nullable|string|max:50',
+            'expiry_date' => 'nullable|date',
         ]);
-
-        $warehouseStock->update($request->all());
+    
+        $stock = WarehouseStock::findOrFail($id);
+        $stock->update([
+            'quantity' => $request->quantity,
+            'batch_number' => $request->batch_number,
+            'expiry_date' => $request->expiry_date,
+        ]);
 
         return redirect()->route('warehouse_stock.index')->with('success', 'Stock updated successfully.');
     }

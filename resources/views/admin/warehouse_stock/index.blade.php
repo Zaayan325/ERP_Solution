@@ -25,7 +25,10 @@
                                     <th scope="col">Warehouse</th>
                                     <th scope="col">Product Name</th>
                                     <th scope="col">Quantity</th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Batch No</th>
+                                    <th scope="col">Expiry Date</th>
+                                    <!-- <th scope="col">Actions</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,16 +36,19 @@
                                     <tr>
                                         <th scope="row">{{ $stock->id }}</th>
                                         <td>{{ $stock->warehouse->name }}</td>
-                                        <td>{{ $stock->product_name }}</td>
+                                        <td>{{ $stock->product->name }}</td>
                                         <td>{{ $stock->quantity }}</td>
-                                        <td>
+                                        <td>{{ $stock->created_at->format('d-m-Y') }}</td>
+                                        <td>{{ $stock->batch_number }}</td>
+                                        <td>{{ $stock->expiry_date }}</td>
+                                        <!-- <td>
                                             <a href="{{ route('warehouse_stock.edit', $stock->id) }}" class="btn btn-warning">Edit</a>
                                             <form action="{{ route('warehouse_stock.destroy', $stock->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 @endforeach
                             </tbody>

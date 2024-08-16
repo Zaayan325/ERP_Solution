@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('warehouse_stock', function (Blueprint $table) {
             $table->id();
             $table->foreignId('warehouse_id')->constrained()->onDelete('cascade');
-            $table->string('product_name');
+            $table->unsignedBigInteger('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
+            $table->string('batch_number')->nullable();
+            $table->date('expiry_date')->nullable();
             $table->timestamps();
         });
     }

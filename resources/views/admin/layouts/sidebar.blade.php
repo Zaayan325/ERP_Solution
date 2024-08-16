@@ -35,18 +35,13 @@
     <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       
       <li>
-        <a href="{{ route('warehouses.index') }}">
-          <i class="bi bi-circle"></i><span>View Warehouse</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('warehouses.create') }}">
-          <i class="bi bi-circle"></i><span>Add Warehouse</span>
-        </a>
-      </li>
-      <li>
         <a href="{{ route('warehouse_stock.index') }}">
           <i class="bi bi-circle"></i><span>View Warehouse Stock</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('warehouse_stock.create') }}">
+          <i class="bi bi-circle"></i><span>Add Warehouse Stock</span>
         </a>
       </li>
     </ul>

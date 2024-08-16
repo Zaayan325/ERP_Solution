@@ -4,58 +4,65 @@ namespace App\Http\Controllers;
 
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class WarehouseController extends Controller
 {
     public function index()
     {
-        $warehouses = Warehouse::all();
-        return view('admin.warehouse.index', compact('warehouses'));
+        $warehouses = Warehouse::paginate(10); // Pagination with 10 items per page
+        return response()->json([
+            'warehouses' => $warehouses->items(),
+            'pagination' => [
+                'total' => $warehouses->total(),
+                'per_page' => $warehouses->perPage(),
+                'current_page' => $warehouses->currentPage(),
+                'last_page' => $warehouses->lastPage(),
+                'from' => $warehouses->firstItem(),
+                'to' => $warehouses->lastItem()
+            ]
+        ]);
     }
 
-    public function create()
-    {
-        return view('admin.warehouse.create');
-    }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:warehouses',
-            'location' => 'required',
-        ]);
+        // Validate the request
+    $request->validate([
+        'name' => 'required',
+        'location' => 'required'
+    ]);
 
-        Warehouse::create($request->all());
+    // Create the warehouse
+    $warehouse = Warehouse::create($request->all());
 
-        return redirect()->route('warehouses.index')->with('success', 'Warehouse created successfully.');
+    // Return a JSON response
+    return response()->json(['success' => true, 'warehouse' => $warehouse]);
+
     }
 
-    public function show(Warehouse $warehouse)
-    {
-        return view('admin.warehouse.show', compact('warehouse'));
-    }
-
-    public function edit(Warehouse $warehouse)
-    {
-        return view('admin.warehouse.edit', compact('warehouse'));
-    }
 
     public function update(Request $request, Warehouse $warehouse)
+{
+    $request->validate([
+        'name' => 'required|unique:warehouses,name,' . $warehouse->id,
+        'location' => 'required',
+    ]);
+
+    // Update the warehouse
+    $warehouse->update($request->all());
+
+    // Return a JSON response indicating success
+    return response()->json(['success' => true, 'warehouse' => $warehouse]);
+}
+
+    public function destroy($id)
     {
-        $request->validate([
-            'name' => 'required|unique:warehouses,name,' . $warehouse->id,
-            'location' => 'required',
-        ]);
-
-        $warehouse->update($request->all());
-
-        return redirect()->route('warehouses.index')->with('success', 'Warehouse updated successfully.');
-    }
-
-    public function destroy(Warehouse $warehouse)
-    {
+        $warehouse = Warehouse::findOrFail($id);
         $warehouse->delete();
 
-        return redirect()->route('warehouses.index')->with('success', 'Warehouse deleted successfully.');
+        return response()->json(['success' => true]);
     }
+
 }
