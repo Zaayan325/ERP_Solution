@@ -16,178 +16,142 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Reports</h5>
+                        <h5 class="card-title">Financial Overview</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Total Purchases</td>
+                                    <td>{{ number_format($netPurchases, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Sales</td>
+                                    <td>{{ number_format($netSales, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Profit</td>
+                                    <td>{{ number_format($profit, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Stock In</td>
+                                    <td>{{ number_format($totalStockIn, 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Stock Out</td>
+                                    <td>{{ number_format($totalStockOut, 0) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Current Stock</td>
+                                    <td>{{ number_format($currentStock, 0) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                        <!-- Tabs -->
-                        <ul class="nav nav-tabs" id="reportTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="purchase-tab" data-bs-toggle="tab" href="#purchase" role="tab" aria-controls="purchase" aria-selected="true">Purchase Report</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="purchase-return-tab" data-bs-toggle="tab" href="#purchase-return" role="tab" aria-controls="purchase-return" aria-selected="false">Purchase Return Report</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="sales-tab" data-bs-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="false">Sales Report</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="sales-return-tab" data-bs-toggle="tab" href="#sales-return" role="tab" aria-controls="sales-return" aria-selected="false">Sales Return Report</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="stock-tab" data-bs-toggle="tab" href="#stock" role="tab" aria-controls="stock" aria-selected="false">Stock Report</a>
-                            </li>
-                        </ul>
+                        <h5 class="card-title">Sales and Purchases Over Time</h5>
+                        <canvas id="salesPurchasesChart"></canvas>
 
-                        <!-- Tab Contents -->
-                        <div class="tab-content" id="reportTabsContent">
-                            <!-- Purchase Report -->
-                            <div class="tab-pane fade show active" id="purchase" role="tabpanel" aria-labelledby="purchase-tab">
-                                <table class="table mt-3">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Supplier</th>
-                                            <th>Date</th>
-                                            <th>Total Amount</th>
-                                            <th>Products</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($purchases as $purchase)
-                                            <tr>
-                                                <td>{{ $purchase->id }}</td>
-                                                <td>{{ $purchase->supplier->name }}</td>
-                                                <td>{{ $purchase->date }}</td>
-                                                <td>{{ $purchase->total_amount }}</td>
-                                                <td>
-                                                    @foreach ($purchase->items as $item)
-                                                        <p>{{ $item->product->name }} ({{ $item->product->brand->name }}): {{ $item->quantity }} x {{ $item->price }} = {{ $item->total }}</p>
-                                                    @endforeach
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Purchase Return Report -->
-                            <div class="tab-pane fade" id="purchase-return" role="tabpanel" aria-labelledby="purchase-return-tab">
-                                <table class="table mt-3">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Supplier</th>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                            <th>Total</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($purchaseReturns as $return)
-                                            <tr>
-                                                <td>{{ $return->id }}</td>
-                                                <td>{{ $return->purchase->supplier->name }}</td>
-                                                <td>{{ $return->product->name }} ({{ $return->product->brand->name }})</td>
-                                                <td>{{ $return->quantity }}</td>
-                                                <td>{{ $return->price }}</td>
-                                                <td>{{ $return->total }}</td>
-                                                <td>{{ $return->created_at }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Sales Report -->
-                            <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                                <table class="table mt-3">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Customer</th>
-                                            <th>Date</th>
-                                            <th>Total Amount</th>
-                                            <th>Products</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($sales as $sale)
-                                            <tr>
-                                                <td>{{ $sale->id }}</td>
-                                                <td>{{ $sale->customer->name }}</td>
-                                                <td>{{ $sale->date }}</td>
-                                                <td>{{ $sale->total_amount }}</td>
-                                                <td>
-                                                    @foreach ($sale->items as $item)
-                                                        <p>{{ $item->product->name }} ({{ $item->product->brand->name }}): {{ $item->quantity }} x {{ $item->price }} = {{ $item->total }}</p>
-                                                    @endforeach
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Sales Return Report -->
-                            <div class="tab-pane fade" id="sales-return" role="tabpanel" aria-labelledby="sales-return-tab">
-                                <table class="table mt-3">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Customer</th>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                            <th>Total</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($salesReturns as $return)
-                                            <tr>
-                                                <td>{{ $return->id }}</td>
-                                                <td>{{ $return->sale->customer->name }}</td>
-                                                <td>{{ $return->product->name }} ({{ $return->product->brand->name }})</td>
-                                                <td>{{ $return->quantity }}</td>
-                                                <td>{{ $return->price }}</td>
-                                                <td>{{ $return->total }}</td>
-                                                <td>{{ $return->created_at }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Stock Report -->
-                            <div class="tab-pane fade" id="stock" role="tabpanel" aria-labelledby="stock-tab">
-                                <table class="table mt-3">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Product</th>
-                                            <th>Brand</th>
-                                            <th>Stock</th>
-                                            <th>Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($products as $product)
-                                            <tr>
-                                                <td>{{ $product->id }}</td>
-                                                <td>{{ $product->name }}</td>
-                                                <td>{{ $product->brand->name }}</td>
-                                                <td>{{ $product->stock }}</td>
-                                                <td>{{ $product->price }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <h5 class="card-title">Stock In and Out Over Time</h5>
+                        <canvas id="stockChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sales and Purchases Chart
+        var ctx = document.getElementById('salesPurchasesChart');
+        if (ctx) {
+            var salesPurchasesChart = new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: {!! json_encode($purchaseData->pluck('date')) !!},
+                    datasets: [
+                        {
+                            label: 'Purchases',
+                            data: {!! json_encode($purchaseData->pluck('amount')) !!},
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        },
+                        {
+                            label: 'Sales',
+                            data: {!! json_encode($salesData->pluck('amount')) !!},
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Stock In and Out Chart
+        var stockCtx = document.getElementById('stockChart');
+        if (stockCtx) {
+            var stockChart = new Chart(stockCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: {!! json_encode($stockInData->pluck('date')) !!},
+                    datasets: [
+                        {
+                            label: 'Stock In',
+                            data: {!! json_encode($stockInData->pluck('quantity')) !!},
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        },
+                        {
+                            label: 'Stock Out',
+                            data: {!! json_encode($stockOutData->pluck('quantity')) !!},
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+@endpush

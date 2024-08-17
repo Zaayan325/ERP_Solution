@@ -37,11 +37,6 @@
                                         <td>{{ $sale->created_at }}</td>
                                         <td>
                                             <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-sm btn-info">View</a>
-                                            <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

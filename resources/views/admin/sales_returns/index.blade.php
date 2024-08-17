@@ -44,11 +44,7 @@
                                         <td>{{ $return->created_at }}</td>
                                         <td>
                                             <a href="{{ route('sales_returns.show', $return->id) }}" class="btn btn-sm btn-info">View</a>
-                                            <form action="{{ route('sales_returns.destroy', $return->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                            </form>
+                            
                                         </td>
                                     </tr>
                                 @endforeach

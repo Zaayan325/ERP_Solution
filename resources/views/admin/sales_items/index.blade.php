@@ -28,7 +28,6 @@
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">Total</th>
-                                    <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,14 +39,6 @@
                                         <td>{{ $item->quantity }}</td>
                                         <td>{{ $item->price }}</td>
                                         <td>{{ $item->total }}</td>
-                                        <td>
-                                            <a href="{{ route('sales_items.edit', $item->id) }}" class="btn btn-warning">Edit</a>
-                                            <form action="{{ route('sales_items.destroy', $item->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Delete</button>
-                                            </form>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -23,6 +23,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Supplier</th>
+                                    <th>Product ID</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
                                     <th>Total Amount</th>
                                     <th>Date</th>
                                     <th>Actions</th>
@@ -30,21 +33,20 @@
                             </thead>
                             <tbody>
                                 @foreach($purchases as $purchase)
-                                    <tr>
-                                        <th>{{ $loop->iteration }}</th>
-                                        <td>{{ $purchase->supplier->name }}</td>
-                                        <td>{{ $purchase->total_amount }}</td>
-                                        <td>{{ $purchase->created_at->format('Y-m-d') }}</td>
-                                        <td>
-                                            <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info btn-sm">View</a>
-                                            <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('purchases.destroy', $purchase->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                    @foreach($purchase->items as $item)
+                                        <tr>
+                                            <th>{{ $loop->parent->iteration }}</th>
+                                            <td>{{ $purchase->supplier->name }}</td>
+                                            <td>{{ $item->product->id }}</td>
+                                            <td>{{ $item->product->name }}</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ $item->total }}</td>
+                                            <td>{{ $purchase->created_at->format('Y-m-d') }}</td>
+                                            <td>
+                                                <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info btn-sm">View</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>

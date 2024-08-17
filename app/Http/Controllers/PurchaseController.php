@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\DB;
 class PurchaseController extends Controller
 {
     public function index()
-    {
-        $purchases = Purchase::with('supplier')->paginate(10);
-        return view('admin.purchases.index', compact('purchases'));
-    }
+{
+    $purchases = Purchase::with(['supplier', 'items.product'])->paginate(10);
+    return view('admin.purchases.index', compact('purchases'));
+}
+
 
     public function create()
     {

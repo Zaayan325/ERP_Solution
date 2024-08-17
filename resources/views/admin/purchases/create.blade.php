@@ -32,23 +32,32 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="items" class="form-label">Products</label>
+                                <label for="products" class="form-label">Products</label>
                                 <div id="products">
-                                    @foreach ($products as $product)
-                                        <div class="row mb-2">
-                                            <div class="col-md-4">
-                                                <input type="hidden" name="items[{{ $loop->index }}][product_id]" value="{{ $product->id }}">
-                                                {{ $product->name }} ({{ $product->brand->name }})
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="number" class="form-control" name="items[{{ $loop->index }}][quantity]" placeholder="Quantity" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="number" class="form-control" name="items[{{ $loop->index }}][price]" placeholder="Price" required>
-                                            </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-4">
+                                            <label for="product_id" class="form-label">Product</label>
+                                            <select class="form-control" name="items[0][product_id]" required>
+                                                <option value="">Select Product</option>
+                                                @foreach ($products as $product)
+                                                    <option value="{{ $product->id }}">{{ $product->name }} - {{ $product->brand->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                    @endforeach
+                                        <div class="col-md-3">
+                                            <label for="quantity" class="form-label">Quantity</label>
+                                            <input type="number" class="form-control" name="items[0][quantity]" placeholder="Quantity" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="price" class="form-label">Price</label>
+                                            <input type="number" class="form-control" name="items[0][price]" placeholder="Price" required>
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-danger remove-product">Remove</button>
+                                        </div>
+                                    </div>
                                 </div>
+                                <button type="button" id="addProduct" class="btn btn-primary">Add Another Product</button>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Create Purchase</button>
@@ -60,3 +69,46 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let productIndex = 1;
+
+        // Add new product row
+        document.getElementById('addProduct').addEventListener('click', function() {
+            const productsDiv = document.getElementById('products');
+            const newProductRow = `
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <select class="form-control" name="items[${productIndex}][product_id]" required>
+                            <option value="">Select Product</option>
+                            @foreach ($products as $product)
+                                <option value="{{ $product->id }}">{{ $product->name }} - {{ $product->brand->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control" name="items[${productIndex}][quantity]" placeholder="Quantity" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control" name="items[${productIndex}][price]" placeholder="Price" required>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger remove-product">Remove</button>
+                    </div>
+                </div>
+            `;
+            productsDiv.insertAdjacentHTML('beforeend', newProductRow);
+            productIndex++;
+        });
+
+        // Remove product row
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-product')) {
+                e.target.closest('.row').remove();
+            }
+        });
+    });
+</script>
+@endpush

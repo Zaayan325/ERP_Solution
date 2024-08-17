@@ -63,29 +63,6 @@
   </li><!-- End Warehouse Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-layout-text-window-reverse"></i><span>Stock</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-      <li>
-        <a href="{{ route('stock_brands.index') }}">
-          <i class="bi bi-circle"></i><span>View Stock Brands</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('stock_categories.index') }}">
-          <i class="bi bi-circle"></i><span>View Stock Categories</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('stock_uoms.index') }}">
-          <i class="bi bi-circle"></i><span>View Stock Units</span>
-        </a>
-      </li>
-    </ul>
-  </li><!-- End Stock Nav -->
-
-  <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-bar-chart"></i><span>Suppliers</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
@@ -103,12 +80,6 @@
     </ul>
   </li><!-- End Suppliers Nav -->
 
-<<<<<<< Updated upstream
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-gem"></i><span>Sales</span><i class="bi bi-chevron-down ms-auto"></i>
-=======
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#icons-customers-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-people"></i><span>Customers</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -148,7 +119,6 @@
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#icons-sales-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-cash"></i><span>Sales</span><i class="bi bi-chevron-down ms-auto"></i>
->>>>>>> Stashed changes
     </a>
     <ul id="icons-sales-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       <li>
@@ -205,48 +175,7 @@
         </a>
       </li>
     </ul>
-<<<<<<< Updated upstream
-  </li><!-- End Icons Nav -->
-
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-gem"></i><span>Customers</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-    <li>
-        <a href="{{ route('customers.index') }}">
-          <i class="bi bi-circle"></i><span>View Customers</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('customers.index') }}">
-          <i class="bi bi-circle"></i><span>Add Customers</span>
-        </a>
-      </li>
-      
-    </ul>
-  </li><!-- End Icons Nav -->
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-gem"></i><span>Inventory</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-    <li>
-        <a href="{{ route('inventory.index') }}">
-          <i class="bi bi-circle"></i><span>View Inventory</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('inventory.create') }}">
-          <i class="bi bi-circle"></i><span>Add Inventory</span>
-        </a>
-      </li>
-    </ul>
-=======
   </li><!-- End Purchases Nav -->
->>>>>>> Stashed changes
 
   <li class="nav-heading">Reports</li>
 
@@ -257,10 +186,6 @@
     </a>
   </li><!-- End Reports Nav -->
 
-<<<<<<< Updated upstream
- 
-</aside><!-- End Sidebar-->
-=======
   <li class="nav-heading">Pages</li>
 
   <li class="nav-item">
@@ -315,4 +240,3 @@
 </ul>
 
 </aside><!-- End Sidebar -->
->>>>>>> Stashed changes
