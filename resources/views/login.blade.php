@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login form - Track point</title>
+  <link href="{{ asset('assets/img/logo.jpg') }}" rel="icon">
+  <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
   <link rel="stylesheet" href="./loginform_css/style.css">
   <style>
  
@@ -31,6 +33,14 @@
 							 class="login__input" placeholder="Password"/>
 							 <x-input-error :messages="$errors->get('password')" class="mt-2" />	 
 				</div>
+
+				<div class="login__field" style="margin-left:20px;">
+            		<label for="remember_me" class="inline-flex items-center">
+               			 <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+               			 <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+           			 </label>
+       			</div>
+
 				<div style="margin-left:20px;">
 				@if (Route::has('password.request'))
                 <a class="" style="tet-decuration: none; color: black;" href="{{ route('password.request') }}">
@@ -38,6 +48,7 @@
                 </a>
             @endif
 				</div>
+
 				<button class="button login__submit">
 					<span class="button__text"></span>
 					{{ __('Log in ') }}
