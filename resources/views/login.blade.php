@@ -13,17 +13,32 @@
 <div class="container">
 	<div class="screen">
 		<div class="screen__content">
-			<form class="login">
-				<div class="login__field">
+		<form method="POST" action="{{ route('login') }}">
+        @csrf
+		
+				<div class="login__field" style="margin-top:150px;">
 					<i class="login__icon fas fa-user"></i>
-					<input type="text" class="login__input" placeholder="User name / Email">
+					<input type="email" name="email" :value="old('email')" required autofocus autocomplete="username" 
+					 id="email" class="login__input" placeholder=" Email"/>
 				</div>
 				<div class="login__field">
 					<i class="login__icon fas fa-lock"></i>
-					<input type="password" class="login__input" placeholder="Password">
+					<input  id="password" type="password"
+                            name="password"
+                            required autocomplete="current-password" 
+							 class="login__input" placeholder="Password"/>
+							 <x-input-error :messages="$errors->get('password')" class="mt-2" />	 
+				</div>
+				<div style="margin-left:20px;">
+				@if (Route::has('password.request'))
+                <a class="" style="tet-decuration: none; color: black;" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
 				</div>
 				<button class="button login__submit">
 					<span class="button__text">Log In Now</span>
+					{{ __('Log in') }}
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>				
 			</form>
