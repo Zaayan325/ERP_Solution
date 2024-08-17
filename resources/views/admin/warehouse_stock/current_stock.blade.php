@@ -25,7 +25,6 @@
                                     <th>Warehouse</th>
                                     <th>Product</th>
                                     <th>Batch Number</th>
-                                    <th>Expiry Date</th>
                                     <th>Quantity</th>
                                     <th>Added On</th>
                                 </tr>
@@ -37,7 +36,6 @@
                                         <td>{{ $stock->warehouse->name }}</td>
                                         <td>{{ $stock->product->name }}</td>
                                         <td>{{ $stock->batch_number ?? 'N/A' }}</td>
-                                        <td>{{ $stock->expiry_date ? $stock->expiry_date->format('Y-m-d') : 'N/A' }}</td>
                                         <td>{{ $stock->quantity }}</td>
                                         <td>{{ $stock->created_at->format('Y-m-d') }}</td>
                                     </tr>
