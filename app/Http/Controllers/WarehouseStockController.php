@@ -96,11 +96,7 @@ class WarehouseStockController extends Controller
     if ($warehouseStock->quantity < $request->quantity) {
         return redirect()->back()->with('error', 'Not enough stock available.');
     }
-
-    // Reduce the stock quantity
-    // $warehouseStock->quantity -= $request->quantity;
-    // $warehouseStock->save();
-
+    
     // Log the stock out transaction
     WarehouseStockOut::create([
         'warehouse_id' => $request->warehouse_id,
