@@ -31,6 +31,7 @@ class ProductController extends Controller
 
         $request->validate([
             'name' => 'required',
+            'model_no'=> 'nullable|string|max:255',
             'category_id' => 'required|exists:product_categories,id',
             'brand_id' => 'required|exists:brands,id',
             'uom_id' => 'required|exists:uoms,id',
@@ -38,11 +39,12 @@ class ProductController extends Controller
 
         Product::create([
             'name' => $request->name,
+            'model_no' => $request->model_no,
             'product_category_id' => $request->category_id, // Ensure this line is correct
             'brand_id' => $request->brand_id,
             'uom_id' => $request->uom_id,
         ]);
-        
+
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
@@ -55,18 +57,31 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, Product $product)
-    {
-        $request->validate([
-            'name' => 'required',
-            'category_id' => 'required|exists:product_categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'uom_id' => 'required|exists:uoms,id',
-        ]);
+{
+    Log::info('Update Request Data: ', $request->all());
 
-        $product->update($request->all());
+    $request->validate([
+        'name' => 'required',
+        'model_no' => 'nullable|string|max:255',
+        'product_category_id' => 'required|exists:product_categories,id',
+        'brand_id' => 'required|exists:brands,id',
+        'uom_id' => 'required|exists:uoms,id',
+    ]);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
-    }
+    Log::info('Before Update: ', $product->toArray());
+
+    $product->update([
+        'name' => $request->name,
+        'model_no' => $request->model_no,
+        'product_category_id' => $request->product_category_id,
+        'brand_id' => $request->brand_id,
+        'uom_id' => $request->uom_id,
+    ]);
+
+    Log::info('After Update: ', $product->toArray());
+
+    return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+}
 
     public function destroy(Product $product)
     {

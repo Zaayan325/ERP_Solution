@@ -12,15 +12,21 @@ use Illuminate\Http\Request;
 use App\Imports\WarehouseStockImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\WarehouseStockExport;
+use Illuminate\Support\Facades\DB; 
 
 
 class WarehouseStockController extends Controller
 {
     public function index()
     {
-        $warehouseStocks = WarehouseStock::with('warehouse','product')->get();
+        // Fetch individual stock entries for display
+        $warehouseStocks = WarehouseStock::with('warehouse', 'product.brand', 'product.category')
+            ->paginate(10);
+    
         return view('admin.warehouse_stock.index', compact('warehouseStocks'));
     }
+    
+
 
     public function create()
     {
@@ -39,46 +45,16 @@ class WarehouseStockController extends Controller
             'expiry_date' => 'nullable|date',
         ]);
     
-        $stock = WarehouseStock::firstOrCreate([
+        WarehouseStock::create([
             'warehouse_id' => $request->warehouse_id,
             'product_id' => $request->product_id,
-            'batch_number' => $request->batch_number,
-            'expiry_date' => $request->expiry_date,
-        ],
-        ['quantity' => 0]    
-    );
-        
-        // Update the stock quantity
-        $stock->quantity += $request->quantity;
-        $stock->save();
-
-        return redirect()->route('warehouse_stock.index')->with('success', 'Stock added successfully.');
-    }
-
-    public function edit(WarehouseStock $warehouseStock)
-    {
-        $warehouses = Warehouse::all();
-        $products = Product::all();
-        return view('admin.warehouse_stock.edit', compact('warehouseStock', 'warehouses','products'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-            'batch_number' => 'nullable|string|max:50',
-            'expiry_date' => 'nullable|date',
-        ]);
-    
-        $stock = WarehouseStock::findOrFail($id);
-        $stock->update([
             'quantity' => $request->quantity,
             'batch_number' => $request->batch_number,
             'expiry_date' => $request->expiry_date,
         ]);
-
-        return redirect()->route('warehouse_stock.index')->with('success', 'Stock updated successfully.');
+        return redirect()->route('warehouse_stock.index')->with('success', 'Stock added successfully.');
     }
+
 
     public function destroy(WarehouseStock $warehouseStock)
     {
@@ -107,24 +83,26 @@ class WarehouseStockController extends Controller
         'reason' => 'nullable|string|max:255',
     ]);
 
+    // Fetch the matching stock record
     $warehouseStock = WarehouseStock::where('warehouse_id', $request->warehouse_id)
                         ->where('product_id', $request->product_id)
+                        ->where('batch_number', $request->batch_number)
                         ->first();
 
     if (!$warehouseStock) {
-        return response()->json(['success' => false, 'message' => 'No stock found for this product in the warehouse.']);
+        return redirect()->back()->with('error', 'No stock found for this product in the warehouse.');
     }
 
     if ($warehouseStock->quantity < $request->quantity) {
-        return response()->json(['success' => false, 'message' => 'Not enough stock available.']);
+        return redirect()->back()->with('error', 'Not enough stock available.');
     }
 
     // Reduce the stock quantity
-    $warehouseStock->quantity -= $request->quantity;
-    $warehouseStock->save();
+    // $warehouseStock->quantity -= $request->quantity;
+    // $warehouseStock->save();
 
     // Log the stock out transaction
-    $stockOut = WarehouseStockOut::create([
+    WarehouseStockOut::create([
         'warehouse_id' => $request->warehouse_id,
         'product_id' => $request->product_id,
         'quantity' => $request->quantity,
@@ -132,8 +110,9 @@ class WarehouseStockController extends Controller
         'reason' => $request->reason,
     ]);
 
-    return redirect()->route('warehouse_stock.adjustments')->with('success', 'Stock deleted successfully.');
+    return redirect()->route('warehouse_stock.index')->with('success', 'Stock removed successfully.');
 }
+
 
 
     //Current Stock Functnality
@@ -142,16 +121,31 @@ class WarehouseStockController extends Controller
         $stockIn = WarehouseStock::where('warehouse_id', $warehouseId)
                     ->where('product_id', $productId)
                     ->sum('quantity');
-    
+
         $stockOut = WarehouseStockOut::where('warehouse_id', $warehouseId)
                     ->where('product_id', $productId)
                     ->sum('quantity');
-    
-        $currentStock = $stockIn - $stockOut;
-    
-        return $currentStock;
+
+        return $stockIn - $stockOut;
     }
-    
+
+    public function showCurrentStock()
+{
+    // Fetch cumulative current stock for display
+    $stocks = WarehouseStock::with('warehouse', 'product')
+        ->select('warehouse_id', 'product_id', DB::raw('SUM(quantity) as total_quantity'))
+        ->groupBy('warehouse_id', 'product_id')
+        ->paginate(10);
+
+    // Calculate current stock for each item after pagination
+    $stocks->getCollection()->transform(function ($stock) {
+        $stock->total_quantity = $this->getCurrentStock($stock->warehouse_id, $stock->product_id);
+        return $stock;
+    });
+
+    return view('admin.warehouse_stock.current_stock', compact('stocks'));
+}
+
 
 //stock Adjust
 
@@ -243,16 +237,12 @@ public function showStock(Request $request)
     return view('admin.warehouse.stock', compact('stocks'));
 }
 
-    public function showAdjustments()
-    {
-        $adjustments = WarehouseStockAdjustment::with('warehouse', 'product')->paginate(10);
-        return view('admin.warehouse_stock.adjustments', compact('adjustments'));
-    }
+public function showAdjustments()
+{
+    $adjustments = WarehouseStockAdjustment::with('warehouse', 'product')->paginate(10);
+    return view('admin.warehouse_stock.adjustments', compact('adjustments'));
+}
 
-    public function showCurrentStock()
-    {
-        $stocks = WarehouseStock::with('warehouse', 'product')->paginate(10);
-        return view('admin.warehouse_stock.current_stock', compact('stocks'));
-    }
+
 
 }

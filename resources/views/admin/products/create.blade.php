@@ -28,6 +28,10 @@
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="mb-3">
+                                <label for="model_no" class="form-label">Model No</label>
+                                <input type="text" class="form-control" id="model_no" name="model_no">
+                            </div>
+                            <div class="mb-3">
                                 <label for="category_id" class="form-label">Category</label>
                                 <div class="d-flex">
                                     <select class="form-control me-2" id="category_id" name="category_id" required>

@@ -24,6 +24,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Model No</th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Brand</th>
                                     <th scope="col">Unit of Measurement</th>
@@ -35,6 +36,7 @@
                                     <tr>
                                         <th scope="row">{{ $product->id }}</th>
                                         <td>{{ $product->name }}</td>
+                                        <td>{{ $product->model_no }}</td>
                                         <td>{{ $product->category->name }}</td>
                                         <td>{{ $product->brand->name }}</td>
                                         <td>{{ $product->uom->name }}</td>

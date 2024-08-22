@@ -24,9 +24,10 @@
                                     <th>#</th>
                                     <th>Warehouse</th>
                                     <th>Product</th>
-                                    <th>Batch Number</th>
+                                    <th>Category</th>
+                                    <th>Brand</th>
+                                    <th>Model Number</th>
                                     <th>Quantity</th>
-                                    <th>Added On</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,15 +36,18 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $stock->warehouse->name }}</td>
                                         <td>{{ $stock->product->name }}</td>
-                                        <td>{{ $stock->batch_number ?? 'N/A' }}</td>
-                                        <td>{{ $stock->quantity }}</td>
-                                        <td>{{ $stock->created_at->format('Y-m-d') }}</td>
+                                        <td>{{ $stock->product->category->name ?? 'N/A' }}</td>
+                                        <td>{{ $stock->product->brand->name ?? 'N/A' }}</td>
+                                        <td>{{ $stock->product->model_no ?? 'N/A' }}</td>
+                                        <td>{{ $stock->total_quantity }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
 
+                        <!-- Pagination links -->
                         {{ $stocks->links() }}
+
                     </div>
                 </div>
             </div>
