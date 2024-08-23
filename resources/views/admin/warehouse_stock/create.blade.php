@@ -20,7 +20,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Add Stock</h5>
-                        <a href="{{ route('warehouse_stock.adjustments.create') }}" class="btn btn-primary mb-3">Add Stock Adjustment</a>
+                       
 
                         <form action="{{ route('warehouse_stock.store') }}" method="POST">
                             @csrf
@@ -58,6 +58,7 @@
                                 <input type="date" class="form-control" id="expiry_date" name="expiry_date">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <a style="margin-top: 17px;" href="{{ route('warehouse_stock.adjustments.create') }}" class="btn btn-primary mb-3">Add Stock Adjustment</a>
                         </form>
 
                     </div>

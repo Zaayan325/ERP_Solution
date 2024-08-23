@@ -38,6 +38,7 @@
                                 <input type="number" class="form-control" id="reorder_level" name="reorder_level" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <a class="btn btn-primary" href="{{ route('inventory.index') }}" role="button">View Inventory</a>
                         </form>
 
                     </div>

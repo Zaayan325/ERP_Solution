@@ -46,6 +46,7 @@
                                 <input type="number" class="form-control" id="price" name="price" step="0.01" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <a class="btn btn-primary" href="{{ route('purchase_items.index') }}" role="button">View Purchase Items</a>
                         </form>
 
                     </div>

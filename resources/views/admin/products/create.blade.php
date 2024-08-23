@@ -72,6 +72,7 @@
                             </div>
                         
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <a class="btn btn-primary" href="{{ route('products.index') }}" role="button">View Products</a>
                         </form>
                     </div>
                 </div>

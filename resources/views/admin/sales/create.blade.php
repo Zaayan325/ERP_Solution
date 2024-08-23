@@ -62,6 +62,14 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Create Sale</button>
+                            <a class="btn btn-primary" href="{{ route('sales.index') }}"
+                             role="button">View Sales</a>
+                          
+                          <br><br> <a class="btn btn-primary" href="{{ route('sales_items.index') }}"
+                           role="button">View Sales Items</a>
+                           
+                          <a class="btn btn-primary" href="{{ route('payments.index') }}"
+                           role="button">View Payments</a>
                         </form>
 
                     </div>

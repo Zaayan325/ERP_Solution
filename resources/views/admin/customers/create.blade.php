@@ -38,6 +38,7 @@
                                 <input type="text" class="form-control" id="address" name="address">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <a class="btn btn-primary" href="{{ route('customers.index') }}" role="button">View Customers</a>
                         </form>
 
                     </div>

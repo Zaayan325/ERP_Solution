@@ -61,6 +61,11 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Create Purchase</button>
+                            <a class="btn btn-primary" href="{{ route('purchases.index') }}"
+                             role="button">View Purchases</a>
+
+                             <a class="btn btn-primary" href="{{ route('purchase_items.index') }}"
+                           role="button">View Purchase Items</a>
                         </form>
 
                     </div>

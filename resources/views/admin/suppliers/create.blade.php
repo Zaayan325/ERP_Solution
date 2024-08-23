@@ -38,6 +38,7 @@
                                 <textarea class="form-control" id="address" name="address"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <a class="btn btn-primary" href="{{ route('suppliers.index') }}" role="button">View Suppliers</a>
                         </form>
 
                     </div>
