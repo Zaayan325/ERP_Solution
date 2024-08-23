@@ -65,6 +65,14 @@ class WarehouseStockController extends Controller
 
     //Warehouse Stock Out
 
+    public function indexStockOut()
+    {
+        // Fetch individual stock entries for display
+        $warehouseStocksOut = WarehouseStockOut::with('warehouse', 'product.brand', 'product.category')
+            ->paginate(10);
+    
+        return view('admin.warehouse_stock.stockout_index', compact('warehouseStocksOut'));
+    }
 
     public function createStockOut()
     {
@@ -96,7 +104,7 @@ class WarehouseStockController extends Controller
     if ($warehouseStock->quantity < $request->quantity) {
         return redirect()->back()->with('error', 'Not enough stock available.');
     }
-    
+
     // Log the stock out transaction
     WarehouseStockOut::create([
         'warehouse_id' => $request->warehouse_id,
@@ -106,7 +114,7 @@ class WarehouseStockController extends Controller
         'reason' => $request->reason,
     ]);
 
-    return redirect()->route('warehouse_stock.index')->with('success', 'Stock removed successfully.');
+    return redirect()->route('warehouses.stockOutview')->with('success', 'Stock removed successfully.');
 }
 
 
@@ -145,6 +153,12 @@ class WarehouseStockController extends Controller
 
 //stock Adjust
 
+public function createAdjustStock()
+    {
+        $warehouses = Warehouse::all();
+        $products = Product::all();
+        return view('admin.warehouse_stock.adjust_stock_create', compact('warehouses', 'products'));
+    }
 public function adjustStock(Request $request)
 {
     $request->validate([
@@ -163,8 +177,8 @@ public function adjustStock(Request $request)
     }
 
     // Adjust the stock quantity
-    $warehouseStock->quantity += $request->adjustment_quantity;
-    $warehouseStock->save();
+    // $warehouseStock->quantity += $request->adjustment_quantity;
+    // $warehouseStock->save();
 
     // Log the adjustment
     $adjustment = WarehouseStockAdjustment::create([
@@ -174,7 +188,7 @@ public function adjustStock(Request $request)
         'reason' => $request->reason,
     ]);
 
-    return response()->json(['success' => true, 'adjustment' => $adjustment]);
+    return redirect()->route('warehouse_stock.adjustments')->with('success', 'Stock removed successfully.');
 }
 
 //Import Stock

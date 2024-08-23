@@ -20,6 +20,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Add Stock</h5>
+                        <a href="{{ route('warehouse_stock.adjustments.create') }}" class="btn btn-primary mb-3">Add Stock Adjustment</a>
 
                         <form action="{{ route('warehouse_stock.store') }}" method="POST">
                             @csrf
@@ -40,7 +41,7 @@
                                 <label for="product_id" class="form-label">Product</label>
                                 <select class="form-control" id="product_id" name="product_id" required>
                                     @foreach ($products as $product)
-                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                        <option value="{{ $product->id }}">{{ $product->name }} ({{ $product->model_no }})</option>
                                     @endforeach
                                 </select>
                             </div>

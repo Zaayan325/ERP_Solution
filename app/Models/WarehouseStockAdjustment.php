@@ -9,6 +9,13 @@ class WarehouseStockAdjustment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'warehouse_id',
+        'product_id',
+        'adjustment_quantity',
+        'reason',
+    ];
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);

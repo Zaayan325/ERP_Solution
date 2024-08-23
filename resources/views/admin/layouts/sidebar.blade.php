@@ -35,28 +35,18 @@
     <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
       
       <li>
-        <a href="{{ route('warehouse_stock.index') }}">
-          <i class="bi bi-circle"></i><span>View Warehouse Stock</span>
+        <a href="{{ route('warehouse_stock.current_stock') }}">
+          <i class="bi bi-circle"></i><span>View Current Stock</span>
         </a>
       </li>
       <li>
         <a href="{{ route('warehouse_stock.create') }}">
-          <i class="bi bi-circle"></i><span>Add Warehouse Stock</span>
+          <i class="bi bi-circle"></i><span>Add Stock In</span>
         </a>
       </li>
       <li>
         <a href="{{ route('warehouse_stock_out.create') }}">
-          <i class="bi bi-circle"></i><span>Stock Out</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('warehouse_stock.adjustments') }}">
-          <i class="bi bi-circle"></i><span>View Stock Adjustments</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('warehouse_stock.current_stock') }}">
-          <i class="bi bi-circle"></i><span>View Current Stock</span>
+          <i class="bi bi-circle"></i><span>Add Stock Out</span>
         </a>
       </li>
     </ul>

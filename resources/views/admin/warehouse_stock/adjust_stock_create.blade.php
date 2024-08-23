@@ -21,7 +21,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Stock Out</h5>
 
-                        <form action="{{ route('warehouse_stock_out.store') }}" method="POST">
+                        <form action="{{ route('warehouse_stock.adjust') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="warehouse_id" class="form-label">Warehouse</label>
@@ -40,12 +40,8 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" id="quantity" name="quantity" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="batch_number" class="form-label">Batch Number</label>
-                                <input type="text" class="form-control" id="batch_number" name="batch_number">
+                                <label for="adjustment_quantity	" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="adjustment_quantity" name="adjustment_quantity" required>
                             </div>
                             <div class="mb-3">
                                 <label for="reason" class="form-label">Reason</label>

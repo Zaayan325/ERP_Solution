@@ -17,6 +17,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Current Stock Levels</h5>
+                        <a href="{{ route('warehouse_stock.index') }}" class="btn btn-primary mb-3">Stock In List</a>
+                        <a href="{{ route('warehouses.stockOutview') }}" class="btn btn-primary mb-3">Stock Out List</a>
+                        <a href="{{ route('warehouse_stock.adjustments') }}" class="btn btn-primary mb-3">Stock Adjustment List</a>
 
                         <table class="table">
                             <thead>

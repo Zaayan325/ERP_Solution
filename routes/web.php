@@ -59,11 +59,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('warehouses', WarehouseController::class);
     Route::resource('warehouse_stock', WarehouseStockController::class);
     Route::post('/warehouses/stock-out', [WarehouseController::class, 'stockOut'])->name('warehouses.stockOut');
+    Route::get('/warehouses/stock-out/view', [WarehouseStockController::class, 'indexStockOut'])->name('warehouses.stockOutview');
 
     Route::get('/stock_out/create', [WarehouseStockController::class, 'createStockOut'])->name('warehouse_stock_out.create');
     Route::post('/stock_out', [WarehouseStockController::class, 'stockOut'])->name('warehouse_stock_out.store');
 
     Route::get('/adjustments', [WarehouseStockController::class, 'showAdjustments'])->name('warehouse_stock.adjustments');
+    Route::get('/adjustments/create', [WarehouseStockController::class, 'createAdjustStock'])->name('warehouse_stock.adjustments.create');
     Route::post('/adjust', [WarehouseStockController::class, 'adjustStock'])->name('warehouse_stock.adjust');
 
     Route::get('/current_stock', [WarehouseStockController::class, 'showCurrentStock'])->name('warehouse_stock.current_stock');
@@ -79,10 +81,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('uoms', UomController::class);
    
     
-    Route::resource('stock_categories', StockCategoryController::class);
-    Route::resource('stock_uoms', StockUomController::class);
-    Route::resource('stock_brands', StockBrandController::class);
-
     Route::resource('inventory', InventoryController::class);
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
