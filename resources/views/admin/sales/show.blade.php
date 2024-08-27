@@ -21,7 +21,7 @@
 
                         <div class="mb-3">
                             <label for="customer_id" class="form-label">Customer</label>
-                            <p>{{ $sale->customer->name }}</p>
+                            <p>{{ $sale->customer->name ?? 'Guest Customer' }}</p>
                         </div>
                         <div class="mb-3">
                             <label for="date" class="form-label">Date</label>
@@ -33,6 +33,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Product</th>
+                                        <th scope="col">Model No</th>
                                         <th scope="col">Brand</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Price</th>
@@ -43,6 +44,7 @@
                                     @foreach ($sale->items as $item)
                                         <tr>
                                             <td>{{ $item->product->name }}</td>
+                                            <td>{{ $item->product->model_no }}</td>
                                             <td>{{ $item->product->brand->name }}</td>
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ $item->price }}</td>

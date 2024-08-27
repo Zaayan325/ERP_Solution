@@ -41,7 +41,7 @@
                                             <td>{{ $item->product->name }}</td>
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ $item->total }}</td>
-                                            <td>{{ $purchase->created_at->format('Y-m-d') }}</td>
+                                            <td>{{ $purchase->created_at->format('d-m-Y') }}</td>
                                             <td>
                                                 <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-info btn-sm">View</a>
                                             </td>

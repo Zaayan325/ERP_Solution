@@ -32,9 +32,9 @@
                                 @foreach ($sales as $sale)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $sale->customer->name }}</td>
+                                        <td>{{ $sale->customer->name ?? 'Guest Customer' }}</td> <!-- Handle null customer -->
                                         <td>{{ $sale->total_amount }}</td>
-                                        <td>{{ $sale->created_at }}</td>
+                                        <td>{{ $sale->created_at->format('Y-m-d') }}</td>
                                         <td>
                                             <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-sm btn-info">View</a>
                                         </td>
