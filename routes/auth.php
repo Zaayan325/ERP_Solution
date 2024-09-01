@@ -16,10 +16,13 @@ Route::middleware('guest')->group(function () {
                 ->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::get('/register/verification', [RegisteredUserController::class, 'showVerificationForm'])->name('verification.show');
+    Route::post('/register/verification', [RegisteredUserController::class, 'verifyOrSkip'])->name('verification.submit');
+
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
-
+    
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])

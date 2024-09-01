@@ -24,6 +24,9 @@ use App\Http\Controllers\PurchaseItemController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PurchaseReturnController;
 use App\Http\Controllers\SalesReturnController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\MigrationController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,14 +46,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/migrate', [MigrationController::class, 'show'])->name('migrate.show');
+    Route::post('/migrate', [MigrationController::class, 'migrate'])->name('migrate.run');
 });
 
 require __DIR__.'/auth.php';
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth' , 'role:user', 'set.user.database'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.index');
     })->name('dashboard');
+    Route::resource('shops', ShopController::class);
+
 
     Route::get('/dashboard/roles', [RoleController::class, 'index'])->name('roles.view');
     Route::get('/dashboard/roles/create', [RoleController::class, 'create'])->name('roles.create');
@@ -105,4 +112,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
+});
+
+
+//Super Admin Routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [SuperAdminController::class, 'index'])->name('admin.dashboard');
+    // Add more admin-specific routes here
+});
+
+
+// Salesperson Dashboard
+Route::middleware(['auth', 'role:salesperson'])->group(function () {
+    Route::get('/salesperson/dashboard', [SuperAdminController::class, 'index'])->name('salesperson.dashboard');
 });

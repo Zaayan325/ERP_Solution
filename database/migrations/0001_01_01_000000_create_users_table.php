@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade');
+            $table->string('email')->nullable()->unique();
+            $table->string('phone_number')->unique();
+            $table->boolean('is_verified')->default(false);
+            $table->integer('verification_code')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
@@ -37,13 +37,19 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['created_by']);
+            $table->dropColumn('created_by');
+            $table->string('email')->nullable(false)->change(); // Revert email to non-nullable
+            $table->dropColumn('phone_number');
+            $table->dropColumn('is_verified');
+            $table->dropColumn('verification_code');
+            $table->timestamp('email_verified_at')->nullable(); // Re-add email verification field
+        });
     }
 };
