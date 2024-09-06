@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('inventory_adjustments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('logo')->nullable();
-            $table->string('ntn_number')->nullable(); 
-            $table->string('phone_number')->nullable(); 
-            $table->text('address')->nullable();
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->integer('adjustment_quantity'); // Positive for adding stock, negative for deducting
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('inventory_adjustments');
     }
 };

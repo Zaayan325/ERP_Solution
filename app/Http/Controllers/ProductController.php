@@ -45,6 +45,9 @@ class ProductController extends Controller
             'uom_id' => $request->uom_id,
         ]);
 
+        if ($request->input('submit_action') === 'submit_and_add_another') {
+            return redirect()->route('products.create')->with('success', 'Product created successfully. You can add another.');
+        }
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 

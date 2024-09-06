@@ -9,9 +9,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UomController;
-use App\Http\Controllers\StockCategoryController;
-use App\Http\Controllers\StockUomController;
-use App\Http\Controllers\StockBrandController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SupplierController;
@@ -89,6 +86,13 @@ Route::middleware(['auth' , 'role:user', 'set.user.database'])->group(function (
    
     
     Route::resource('inventory', InventoryController::class);
+    // Adjust stock
+    Route::get('/inventory/adjust', [InventoryController::class, 'createAdjustStock'])->name('inventory.adjustments.create');
+    Route::post('/inventory/adjust', [InventoryController::class, 'adjustStock'])->name('inventory.adjustments.store');
+
+    // Show adjustments
+    Route::get('/inventory/adjustments', [InventoryController::class, 'showAdjustments'])->name('inventory.adjustments.index');
+
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 

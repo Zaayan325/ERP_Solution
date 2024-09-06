@@ -19,7 +19,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Create Product</h5>
+                        <h5 class="card-title">ADD Product</h5>
 
                         <form action="{{ route('products.store') }}" method="POST">
                             @csrf
@@ -72,7 +72,8 @@
                             </div>
                         
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <a class="btn btn-primary" href="{{ route('products.index') }}" role="button">View Products</a>
+                            <button type="submit" name="submit_action" value="submit_and_add_another" class="btn btn-primary">Submit and Add Another</button>
+                            <!-- <a class="btn btn-primary" href="{{ route('products.index') }}" role="button">View Products</a> -->
                         </form>
                     </div>
                 </div>
@@ -130,53 +131,98 @@
     </div>
 
     <!-- Brand Modal -->
-    <div class="modal fade" id="brandModal" tabindex="-1" aria-labelledby="brandModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="brandModalLabel">Add Brand</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="brandForm">
-                        <div class="mb-3">
-                            <label for="brand_name" class="form-label">Brand Name</label>
-                            <input type="text" class="form-control" id="brand_name" name="brand_name" required>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="addBrand">Add</button>
-                    </form>
-                    <hr>
+<div class="modal fade" id="brandModal" tabindex="-1" aria-labelledby="brandModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="brandModalLabel">Add Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="brandForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="brand_name" class="form-label">Brand Name</label>
+                        <input type="text" class="form-control" id="brand_name" name="brand_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="logo" class="form-label">Company Logo</label>
+                        <input type="file" class="form-control" id="logo" name="logo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ntn_number" class="form-label">NTN Number</label>
+                        <input type="text" class="form-control" id="ntn_number" name="ntn_number">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phone_number" name="phone_number">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" name="address"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="addBrand">Add</button>
+                </form>
+                <hr>
                     <button type="button" id="loadBrands" class="btn btn-info">View Existing Brands</button>
                     <div id="existingBrands" class="mt-3" style="display:none;">
                         <h5>Existing Brands</h5>
                         <div id="brandPagination"></div>
                         <ul id="brandList"></ul>
                     </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Edit Brand Modal -->
-    <div class="modal fade" id="editBrandModal" tabindex="-1" aria-labelledby="editBrandModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editBrandModalLabel">Edit Brand</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editBrandForm">
-                        <div class="mb-3">
-                            <label for="edit_brand_name" class="form-label">Brand Name</label>
-                            <input type="text" class="form-control" id="edit_brand_name" name="edit_brand_name" required>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="updateBrand">Update</button>
-                    </form>
-                </div>
+<!-- Edit Brand Modal -->
+<div class="modal fade" id="editBrandModal" tabindex="-1" aria-labelledby="editBrandModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBrandModalLabel">Edit Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editBrandForm" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="edit_brand_name" class="form-label">Brand Name</label>
+                        <input type="text" class="form-control" id="edit_brand_name" name="name" required>
+                    </div>
+                    
+                    <!-- Display Current Logo -->
+                    <div class="mb-3">
+                        <label for="current_logo" class="form-label">Current Logo</label><br>
+                        <img id="current_logo" src="" alt="Logo" width="100">
+                    </div>
+
+                    <!-- Upload New Logo -->
+                    <div class="mb-3">
+                        <label for="edit_logo" class="form-label">Upload New Logo</label>
+                        <input type="file" class="form-control" id="edit_logo" name="logo">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_ntn_number" class="form-label">NTN Number</label>
+                        <input type="text" class="form-control" id="edit_ntn_number" name="ntn_number">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_phone_number" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="edit_phone_number" name="phone_number">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_address" class="form-label">Address</label>
+                        <textarea class="form-control" id="edit_address" name="address"></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" id="updateBrand">Update</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
     <!-- UOM Modal -->
     <div class="modal fade" id="uomModal" tabindex="-1" aria-labelledby="uomModalLabel" aria-hidden="true">
@@ -311,83 +357,197 @@
             .catch(error => console.error('Error updating category:', error));
         }
     });
+        // ADD Brands
 
-    // Add Brand
-    document.getElementById('addBrand').addEventListener('click', function() {
-        const brandName = document.getElementById('brand_name').value;
+    const addBrandButton = document.getElementById('addBrand');
 
-        if (brandName) {
+    // Check if the button exists
+    if (addBrandButton) {
+        // Attach the event listener only if the button is found
+        addBrandButton.addEventListener('click', function() {
+            const brandForm = document.getElementById('brandForm');
+            const brandNameInput = document.getElementById('brand_name');
+
+            // Ensure the form and name input exist
+            if (!brandForm || !brandNameInput) {
+                console.error('Brand form or brand name input not found.');
+                return; // Exit if necessary elements are not found
+            }
+
+            const formData = new FormData(brandForm);
+            formData.append('name', brandNameInput.value);
+
             fetch('{{ route("brands.store") }}', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                body: JSON.stringify({ name: brandName })
+                body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => { throw new Error(data.message); });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
+                    // Optional: Update the UI
                     const brandList = document.getElementById('brandList');
-                    const newBrand = document.createElement('li');
-                    newBrand.innerHTML = `${data.brand.name} 
-                        <button class="btn btn-sm btn-danger ms-2 delete-brand" data-id="${data.brand.id}">Delete</button>
-                        <button class="btn btn-sm btn-warning ms-2 edit-brand" data-id="${data.brand.id}" data-name="${data.brand.name}">Edit</button>`;
-                    brandList.appendChild(newBrand);
+                    if (brandList) {
+                        const newBrand = document.createElement('li');
+                        const brandLogoSrc = data.brand.logo ? `/storage/${data.brand.logo}` : '/path/to/default/logo.png';
+                        newBrand.innerHTML = `
+                            <img src="${brandLogoSrc}" alt="${data.brand.name}" width="50" /> ${data.brand.name} 
+                            <button class="btn btn-sm btn-danger ms-2 delete-brand" data-id="${data.brand.id}">Delete</button>
+                            <button class="btn btn-sm btn-warning ms-2 edit-brand" data-id="${data.brand.id}" data-name="${data.brand.name}" data-logo="${data.brand.logo}">Edit</button>`;
+                        brandList.appendChild(newBrand);
+                    }
 
                     const brandSelect = document.getElementById('brand_id');
-                    const newOption = document.createElement('option');
-                    newOption.value = data.brand.id;
-                    newOption.text = data.brand.name;
-                    brandSelect.appendChild(newOption);
+                    if (brandSelect) {
+                        const newOption = document.createElement('option');
+                        newOption.value = data.brand.id;
+                        newOption.text = data.brand.name;
+                        brandSelect.appendChild(newOption);
+                    }
 
-                    document.getElementById('brand_name').value = '';
+                    brandForm.reset();
                 } else {
+                    alert('Error: ' + data.message); // Display the error to the user
                     console.error('Failed to add brand:', data.message);
                 }
             })
-            .catch(error => console.error('Error adding brand:', error));
-        }
-    });
-
-    // Edit Brand
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('edit-brand')) {
-            const id = e.target.getAttribute('data-id');
-            const name = e.target.getAttribute('data-name');
-            document.getElementById('edit_brand_name').value = name;
-            document.getElementById('updateBrand').setAttribute('data-id', id);
-            $('#editBrandModal').modal('show');
-        }
-    });
-
-    document.getElementById('updateBrand').addEventListener('click', function() {
-        const id = this.getAttribute('data-id');
-        const name = document.getElementById('edit_brand_name').value;
-        if (name) {
-            fetch(`/brands/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ name: name })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .catch(error => {
+                alert('Server error: ' + error.message); // Display server errors to the user
+                console.error('Error adding brand:', error.message);
+            });
+        });
+    } else {
+        console.error('Add Brand button not found.');
+    }
+    // Load Existing Brands
+    const loadBrandsButton = document.getElementById('loadBrands');
+    if (loadBrandsButton) {
+        loadBrandsButton.addEventListener('click', function() {
+            fetch('{{ route("brands.index") }}')
+                .then(response => response.json())
+                .then(data => {
                     const brandList = document.getElementById('brandList');
-                    const listItem = brandList.querySelector(`button[data-id='${id}']`).parentElement;
-                    listItem.firstChild.textContent = name;
-                    const brandSelect = document.getElementById('brand_id');
-                    const optionToUpdate = brandSelect.querySelector(`option[value='${id}']`);
-                    if (optionToUpdate) optionToUpdate.textContent = name;
-                    $('#editBrandModal').modal('hide');
-                }
-            })
-            .catch(error => console.error('Error updating brand:', error));
+                    brandList.innerHTML = ''; // Clear existing list
+                    
+                    data.brands.forEach(brand => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <img src="/storage/${brand.logo}" alt="${brand.name}" width="50" /> ${brand.name}
+                            <button class="btn btn-sm btn-danger ms-2 delete-brand" data-id="${brand.id}">Delete</button>
+                            <button class="btn btn-sm btn-warning ms-2 edit-brand" data-id="${brand.id}" data-name="${brand.name}" data-logo="${brand.logo}">Edit</button>`;
+                        brandList.appendChild(listItem);
+                    });
+
+                    document.getElementById('existingBrands').style.display = 'block';
+                })
+                .catch(error => console.error('Error loading brands:', error));
+        });
+    }
+
+// Edit Brand
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('edit-brand')) {
+        const id = e.target.getAttribute('data-id');
+        const name = e.target.getAttribute('data-name');
+        const logo = e.target.getAttribute('data-logo');
+
+        // Set the brand name in the modal
+        document.getElementById('edit_brand_name').value = name;
+
+        // Set the current logo image src in the modal (fallback to default if logo is null or empty)
+        const logoSrc = logo ? `/storage/${logo}` : '/path/to/default/logo.png';
+        const currentLogo = document.getElementById('current_logo');
+        if (currentLogo) {
+            currentLogo.src = logoSrc;
         }
+
+        // Set the brand ID on the Update button for reference
+        document.getElementById('updateBrand').setAttribute('data-id', id);
+
+        // Show the modal
+        $('#editBrandModal').modal('show');
+    }
+});
+
+// Handle brand update submission
+const updateBrandButton = document.getElementById('updateBrand');
+if (updateBrandButton) {
+    updateBrandButton.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const form = document.getElementById('editBrandForm');
+        const formData = new FormData(form);
+
+        // Log the form data for debugging
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        // Submit the form data
+        fetch(`/brands/${id}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-HTTP-Method-Override': 'PUT',
+                'Accept': 'application/json' // Expect JSON response from server
+            },
+            body: formData
+        })
+        .then(response => {
+            // Check if the response is not JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('text/html')) {
+                return response.text().then(html => {
+                    throw new Error('Received HTML response instead of JSON: ' + html);
+                });
+            }
+
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+
+            return response.json(); // Proceed with JSON response
+        })
+        .then(data => {
+    if (data.success) {
+        console.log('Brand updated successfully:', data);
+
+        // Update the brand logo in the UI
+        const brandList = document.getElementById('brandList');
+        const listItem = brandList.querySelector(`button[data-id='${id}']`).parentElement;
+
+        // Ensure the logo img element exists before setting the src
+        const logoImg = listItem.querySelector('img');
+        if (logoImg) {
+            logoImg.src = `/storage/${data.brand.logo}`;
+        } else {
+            console.error('Logo image element not found.');
+        }
+
+        // Update brand name
+        listItem.firstChild.nextSibling.textContent = data.brand.name;
+
+        // Update the brand select dropdown (if applicable)
+        const brandSelect = document.getElementById('brand_id');
+        const optionToUpdate = brandSelect.querySelector(`option[value='${id}']`);
+        if (optionToUpdate) {
+            optionToUpdate.textContent = data.brand.name;
+        }
+
+        // Close the modal after a successful update
+        $('#editBrandModal').modal('hide');
+    } else {
+        alert('Failed to update brand: ' + data.message);
+    }
+})
     });
+}
 
     // Add UOM
     document.getElementById('addUom').addEventListener('click', function() {

@@ -9,7 +9,13 @@ class Brand extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'logo',
+        'ntn_number',
+        'phone_number',
+        'address',
+    ];
     protected $table = 'brands';
 
 }
