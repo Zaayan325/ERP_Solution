@@ -24,6 +24,8 @@ use App\Http\Controllers\SalesReturnController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\MigrationController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseCategoryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -116,6 +118,11 @@ Route::middleware(['auth' , 'role:user', 'set.user.database'])->group(function (
 
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
+
+    //Expenses
+    Route::resource('expenses', ExpenseController::class);
+    Route::post('/categories', [ExpenseCategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories', [ExpenseCategoryController::class, 'index'])->name('categories.index');
 });
 
 
