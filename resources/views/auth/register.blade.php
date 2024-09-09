@@ -72,7 +72,7 @@
                     <input id="password_confirmation" type="password" name="password_confirmation" class="login__input" required>
                 </div>
 
-                <button type="submit" class="button login__submit">Register</button>
+                <button type="submit" class="button register__submit">Register</button>
             </form>
         </div>
         <div class="screen__background">

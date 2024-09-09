@@ -1,7 +1,7 @@
-/* General Styling */
+/* General body styling */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f7f9fc;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,117 +9,166 @@ body {
     margin: 0;
 }
 
-/* Container for the form */
+/* Container for the entire form */
 .container {
     background-color: #ffffff;
-    width: 450px;
     padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    position: relative;
-    z-index: 1;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    max-width: 420px;
+    width: 100%;
 }
 
-/* Styling for the screen */
-.screen {
+/* Form title */
+h1 {
+    color: #333;
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Input field styling */
+.login__field {
+    margin-bottom: 15px;
     position: relative;
 }
 
-/* Form content */
-.screen__content {
-    position: relative;
-    z-index: 1;
+.login__input {
+    width: calc(100% - 22px);
+    padding: 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.login__input:focus {
+    border-color: #007bff;
+}
+
+/* Checkbox and forgot password styling */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.options label {
+    font-size: 13px;
+    color: #666;
+}
+
+.options .forgot-password {
+    font-size: 13px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.options .forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Submit button styling */
+.login-button {
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
 }
 
 /* Background shapes */
 .screen__background {
     position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 520px;
-    height: 520px;
-    background: #7a1ea1;
-    border-radius: 50%;
-    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #007bff, #6c757d);
+    border-radius: 10px;
     overflow: hidden;
 }
 
 .screen__background__shape {
     position: absolute;
-    z-index: 0;
-    width: 300px;
-    height: 300px;
+    transform: rotate(45deg);
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .screen__background__shape1 {
-    top: 50px;
-    left: -50px;
+    height: 480px;
+    width: 480px;
+    top: -40px;
+    right: 100px;
 }
 
 .screen__background__shape2 {
-    top: -100px;
-    right: -100px;
+    height: 200px;
+    width: 200px;
+    top: -150px;
+    right: 0;
 }
 
 .screen__background__shape3 {
-    bottom: 50px;
-    right: -50px;
+    height: 500px;
+    width: 180px;
+    top: -20px;
+    right: 0;
 }
 
 .screen__background__shape4 {
-    bottom: -80px;
-    left: -80px;
+    height: 350px;
+    width: 180px;
+    top: 180px;
+    right: 30px;
 }
-
-/* Styling for each input field */
-.login__field {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.login__field label {
-    font-size: 14px;
-    color: #4b2d59;
-}
-
-.login__input {
-    background-color: #f9f7fc;
-    border: 1px solid #c3b4d5;
-    border-radius: 5px;
-    padding: 10px;
+/* Style for the register button */
+.register__submit {
     width: 100%;
-    font-size: 14px;
-    color: #4b2d59;
-}
-
-.login__input:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(122, 30, 161, 0.5);
-    background-color: #ffffff;
-}
-
-/* Error message styling */
-.error {
-    color: #d9534f;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-/* Button styling */
-.button {
-    background-color: #7a1ea1;
+    padding: 14px;
+    background-color: #007BFF; /* Primary button color */
     border: none;
-    padding: 10px;
-    width: 100%;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #ffffff;
+    border-radius: 10px;
+    color: #ffffff; /* Text color */
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between text and icon */
 }
 
-.button:hover {
-    background-color: #5a0e71;
+.register__submit:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-3px); /* Slight lift effect on hover */
+}
+
+.register__submit:active {
+    background-color: #004080; /* Even darker blue on click */
+    transform: translateY(0); /* Reset lift effect */
+}
+
+/* Icon within the button */
+.button__icon {
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+
+.register__submit:hover .button__icon {
+    transform: translateX(6px); /* Slight arrow movement on hover */
 }
