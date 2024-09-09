@@ -33,6 +33,10 @@ use Illuminate\Support\Facades\Route;
 Route::get("/", function () {
     return view('login');
 });
+Route::get("/invoice", function () {
+    return view('invoice');
+});
+
 
 
 
