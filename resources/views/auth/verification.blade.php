@@ -10,8 +10,9 @@
             <input type="text" name="code" id="code">
         </div>
         <div>
-            <button type="submit">Verify</button>
-            <button type="submit" name="skip" value="true">Skip</button>
+          
+            <button class="btn btn-primary" type="submit">Verify</button>
+            <button class="btn btn-primary" type="submit" name="skip" value="true">Skip</button>
         </div>
     </form>
 </div>
