@@ -6,7 +6,7 @@
     <title>Register - Track Point</title>
     <link href="{{ asset('assets/img/logo.jpg') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-    <link rel="stylesheet" href="{{ asset('loginform_css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('loginform_css/register.css') }}">
 </head>
 <body>
 <div class="container">

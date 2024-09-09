@@ -1,0 +1,125 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container for the form */
+.container {
+    background-color: #ffffff;
+    width: 450px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Styling for the screen */
+.screen {
+    position: relative;
+}
+
+/* Form content */
+.screen__content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Background shapes */
+.screen__background {
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 520px;
+    height: 520px;
+    background: #7a1ea1;
+    border-radius: 50%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.screen__background__shape {
+    position: absolute;
+    z-index: 0;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.screen__background__shape1 {
+    top: 50px;
+    left: -50px;
+}
+
+.screen__background__shape2 {
+    top: -100px;
+    right: -100px;
+}
+
+.screen__background__shape3 {
+    bottom: 50px;
+    right: -50px;
+}
+
+.screen__background__shape4 {
+    bottom: -80px;
+    left: -80px;
+}
+
+/* Styling for each input field */
+.login__field {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.login__field label {
+    font-size: 14px;
+    color: #4b2d59;
+}
+
+.login__input {
+    background-color: #f9f7fc;
+    border: 1px solid #c3b4d5;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    font-size: 14px;
+    color: #4b2d59;
+}
+
+.login__input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(122, 30, 161, 0.5);
+    background-color: #ffffff;
+}
+
+/* Error message styling */
+.error {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Button styling */
+.button {
+    background-color: #7a1ea1;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #5a0e71;
+}
