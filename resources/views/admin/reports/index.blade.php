@@ -11,12 +11,30 @@
         </nav>
     </div>
 
+    <!-- Product Filter for Stock at the top -->
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Financial Overview</h5>
+                        <form method="GET" action="{{ route('reports.index') }}" id="productForm">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">Select Product for Warehouse Stock</h5>
+                                <div>
+                                    <select class="form-control" name="product_id" id="product_id" onchange="updateReport()">
+                                        <option value="all">All Products</option>
+                                        @foreach($products as $product)
+                                            <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                                {{ $product->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Financial Overview -->
+                        <h5 class="card-title" id="reportTitle">{{ request('product_id') == 'all' ? 'Financial Overview' : 'Financial Overview for ' . ($products->firstWhere('id', request('product_id'))->name ?? 'Selected Product') }}</h5>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -32,6 +50,10 @@
                                 <tr>
                                     <td>Total Sales</td>
                                     <td>{{ number_format($netSales, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Expenses</td>
+                                    <td>{{ number_format($totalExpenses, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td>Profit</td>
@@ -52,9 +74,11 @@
                             </tbody>
                         </table>
 
+                        <!-- Sales and Purchases Over Time -->
                         <h5 class="card-title">Sales and Purchases Over Time</h5>
                         <canvas id="salesPurchasesChart"></canvas>
 
+                        <!-- Stock In and Out Over Time -->
                         <h5 class="card-title">Stock In and Out Over Time</h5>
                         <canvas id="stockChart"></canvas>
                     </div>
@@ -77,7 +101,7 @@
             var salesPurchasesChart = new Chart(ctx.getContext('2d'), {
                 type: 'line',
                 data: {
-                    labels: {!! json_encode($purchaseData->pluck('date')) !!},
+                    labels: {!! json_encode($purchaseData->pluck('created_at')) !!},
                     datasets: [
                         {
                             label: 'Purchases',
@@ -153,5 +177,10 @@
             });
         }
     });
+
+    // Function to submit the form and update the page
+    function updateReport() {
+        document.getElementById('productForm').submit();
+    }
 </script>
 @endpush
