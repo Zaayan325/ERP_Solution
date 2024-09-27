@@ -19,14 +19,19 @@
                     <div class="card-body">
                         <h5 class="card-title">Sale Details</h5>
 
+                        <!-- Customer Section -->
                         <div class="mb-3">
                             <label for="customer_id" class="form-label">Customer</label>
                             <p>{{ $sale->customer->name ?? 'Guest Customer' }}</p>
                         </div>
+
+                        <!-- Sale Date -->
                         <div class="mb-3">
                             <label for="date" class="form-label">Date</label>
                             <p>{{ $sale->created_at->format('d-m-Y') }}</p>
                         </div>
+
+                        <!-- Products Section -->
                         <div class="mb-3">
                             <label for="products" class="form-label">Products</label>
                             <table class="table">
@@ -43,9 +48,9 @@
                                 <tbody>
                                     @foreach ($sale->items as $item)
                                         <tr>
-                                            <td>{{ $item->product->name }}</td>
-                                            <td>{{ $item->product->model_no }}</td>
-                                            <td>{{ $item->product->brand->name }}</td>
+                                            <td>{{ $item->product->name ?? 'Unknown Product' }}</td>
+                                            <td>{{ $item->product->model_no ?? 'N/A' }}</td>
+                                            <td>{{ $item->product->brand->name ?? 'No Brand' }}</td>
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ $item->price }}</td>
                                             <td>{{ $item->total }}</td>
@@ -54,6 +59,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Total Amount -->
                         <div class="mb-3">
                             <label for="total_amount" class="form-label">Total Amount</label>
                             <p>{{ $sale->total_amount }}</p>

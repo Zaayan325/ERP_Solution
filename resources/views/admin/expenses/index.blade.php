@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ $expense->category->name }}</td>
                     <td>{{ number_format($expense->amount, 2) }}</td>
-                    <td>{{ $expense->expense_date->format('Y-m-d') }}</td>
+                    <td>{{ $expense->expense_date }}</td>
                     <td>{{ $expense->description ?? 'N/A' }}</td>
                     <td>
                         <a href="{{ route('expenses.edit', $expense->id) }}" class="btn btn-warning">Edit</a>

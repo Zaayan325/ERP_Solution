@@ -79,8 +79,10 @@ class PurchaseController extends Controller
         }
     }
 
-    public function show(Purchase $purchase)
+    public function show($id)
     {
+        $purchase = Purchase::withoutGlobalScopes()->find($id);
+
         $purchase->load('supplier', 'items.product.brand');
         return view('admin.purchases.show', compact('purchase'));
     }

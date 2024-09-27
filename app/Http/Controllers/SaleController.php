@@ -80,8 +80,13 @@ class SaleController extends Controller
 }
 
 
-    public function show(Sale $sale)
+    public function show($id)
     {
+        $sale = Sale::withoutGlobalScopes()->find($id);
+
+        if (!$sale) {
+            return redirect()->route('sales.index')->with('error', 'Sale not found.');
+        }
         $sale->load('customer', 'items.product.brand');
         return view('admin.sales.show', compact('sale'));
     }
