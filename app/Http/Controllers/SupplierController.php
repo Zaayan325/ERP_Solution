@@ -4,58 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-
 
 class SupplierController extends Controller
 {
     public function index()
     {
-        $suppliers = Supplier::paginate(10); // Pagination with 10 items per page
-        return response()->json([
-            'suppliers' => $suppliers->items(),
-            'pagination' => [
-                'total' => $suppliers->total(),
-                'per_page' => $suppliers->perPage(),
-                'current_page' => $suppliers->currentPage(),
-                'last_page' => $suppliers->lastPage(),
-                'from' => $suppliers->firstItem(),
-                'to' => $suppliers->lastItem(),
-            ]
-        ]);
+        $suppliers = Supplier::all();
+        return view('admin.suppliers.index', compact('suppliers'));
     }
 
+    public function create()
+    {
+        return view('admin.suppliers.create');
+    }
 
     public function store(Request $request)
-{
-    Log::info('Store Supplier Request:', $request->all());
-
-    try {
-        // Validate the request
-        $validated = $request->validate([
+    {
+        $request->validate([
             'name' => 'required',
             'email' => 'nullable|email|unique:suppliers',
-            'phone' => 'required',  // This is causing the 422 error when null
+            'phone' => 'required',
             'address' => 'nullable',
         ]);
 
-        // Create the supplier
-        $supplier = Supplier::create($validated);
+        Supplier::create($request->all());
 
-        // Return success response
-        return response()->json(['success' => true, 'supplier' => $supplier]);
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        // Return validation errors
-        return response()->json(['success' => false, 'errors' => $e->errors()], 422);
+        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully.');
     }
-}
 
-    
+    public function show(Supplier $supplier)
+    {
+        return view('admin.suppliers.show', compact('supplier'));
+    }
+
+    public function edit(Supplier $supplier)
+    {
+        return view('admin.suppliers.edit', compact('supplier'));
+    }
+
     public function update(Request $request, Supplier $supplier)
     {
         $request->validate([
-            'name' => 'required|unique:suppliers,name,' . $supplier->id,
+            'name' => 'required',
             'email' => 'nullable|email|unique:suppliers,email,' . $supplier->id,
             'phone' => 'required',
             'address' => 'nullable',
@@ -63,14 +53,13 @@ class SupplierController extends Controller
 
         $supplier->update($request->all());
 
-        return response()->json(['success' => true, 'supplier' => $supplier]);
+        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Supplier $supplier)
     {
-        $supplier = Supplier::findOrFail($id);
         $supplier->delete();
 
-        return response()->json(['success' => true]);
+        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully.');
     }
 }

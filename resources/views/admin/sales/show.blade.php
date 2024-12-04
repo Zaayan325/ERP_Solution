@@ -22,7 +22,7 @@
                         <!-- Customer Section -->
                         <div class="mb-3">
                             <label for="customer_id" class="form-label">Customer</label>
-                            <p>{{ $sale->customer->name ?? 'Guest Customer' }}</p>
+                            <p>{{ $sale->customer->name }}</p>
                         </div>
 
                         <!-- Sale Date -->
@@ -38,7 +38,6 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Product</th>
-                                        <th scope="col">Model No</th>
                                         <th scope="col">Brand</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Price</th>
@@ -48,9 +47,14 @@
                                 <tbody>
                                     @foreach ($sale->items as $item)
                                         <tr>
+<<<<<<< HEAD
                                             <td>{{ $item->product->name ?? 'Unknown Product' }}</td>
                                             <td>{{ $item->product->model_no ?? 'N/A' }}</td>
                                             <td>{{ $item->product->brand->name ?? 'No Brand' }}</td>
+=======
+                                            <td>{{ $item->product->name }}</td>
+                                            <td>{{ $item->product->brand->name }}</td>
+>>>>>>> parent of 5acd5c5 (Updated)
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ $item->price }}</td>
                                             <td>{{ $item->total }}</td>

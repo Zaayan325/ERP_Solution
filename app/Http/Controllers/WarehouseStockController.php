@@ -130,11 +130,7 @@ class WarehouseStockController extends Controller
                     ->where('product_id', $productId)
                     ->sum('quantity');
 
-        $AdjustStock = WarehouseStockAdjustment::where('warehouse_id', $warehouseId)
-                    ->where('product_id', $productId)
-                    ->sum('adjustment_quantity');
-
-        return $stockIn - $stockOut + $AdjustStock;
+        return $stockIn - $stockOut;
     }
 
     public function showCurrentStock()

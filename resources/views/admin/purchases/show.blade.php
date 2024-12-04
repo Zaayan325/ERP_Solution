@@ -25,7 +25,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="date" class="form-label">Date</label>
-                            <p>{{ $purchase->created_at->format('d-m-Y') }}</p>
+                            <p>{{ $purchase->date }}</p>
                         </div>
                         <div class="mb-3">
                             <label for="products" class="form-label">Products</label>
